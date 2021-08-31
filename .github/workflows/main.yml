@@ -3,9 +3,26 @@ on:
   pull_request:
     branches: [ master ]
 jobs:
-  label-pr:
+  label:
     runs-on: ubuntu-latest
     steps:
       - uses: srvaroa/labeler@master
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        with:
+          version: 1
+          labels:
+            - label: "enhancement"
+              title: "^feat.*"
+            - label: "bug"
+              title: "^fix.*"
+            - label: "chore"
+              title: "^chore.*"
+            - label: "chore"
+              title: "^build.*"
+            - label: "docs"
+              title: "^docs.*"
+            - label: "testing"
+              title: "^test.*"
+            - label: "refactor"
+              title: "^refactor.*"
