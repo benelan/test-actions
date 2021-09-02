@@ -5,7 +5,7 @@ on:
     types: [ open ]
 jobs:
   assign:
-  runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: kentaro-m/auto-assign-action@v1.2.0
   label:
