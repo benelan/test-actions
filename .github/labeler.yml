@@ -8,6 +8,8 @@
     title: "^[cC][hH][oO][rR][eE].*"
   - label: "chore"
     title: "^[bB][uU][iI][lL][dD].*"
+  - label: "chore"
+    title: "[tT][oO][oO][lL][iI][nN][gG].*"
   - label: "docs"
     title: "^[dD][oO][cC][sS].*"
   - label: "testing"
