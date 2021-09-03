@@ -1,8 +1,5 @@
 name: PR Bot
 on:
-  issues:
-    types: [ opened ]
-    branches: [ master ]
   pull_request:
     types: [ opened ]
     branches: [ master ]
@@ -23,4 +20,4 @@ jobs:
       - uses: benelan/milestone-action@v1.0.1
         with:
           github_token: "${{ secrets.GITHUB_TOKEN }}"
-          farthest: true
+          # farthest: true
