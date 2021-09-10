@@ -1,0 +1,15 @@
+name: 'Issue Info'
+on:
+  issues:
+    types: [opened, edited, labeled]
+    branches: [master]
+  issue_comment:
+    types: [created, edited]
+    branches: [master]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: benelan/need-info-action@v0.0.0
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
