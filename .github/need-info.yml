@@ -2,7 +2,6 @@ labelToAdd: 'need more info'
 labelsToCheck:
   - bug
 commentHeader: 'More information is required to proceed with this issue:'
-commentFooter: 'This issue will be automatically closed in a week if the information is not provided. Thanks for your understanding.'
 requiredItems:
   -
     response: '- Use the issue template for bugs'
@@ -18,3 +17,4 @@ requiredItems:
       - codepen.io
       - jsfiddle.net
       - codesandbox.io
+commentFooter: 'This issue will be automatically closed in a day if the information is not provided. Thanks for your understanding.'
