@@ -12,7 +12,7 @@ requiredItems:
       - '### Reproduction Steps or Sample'
       - '### Relevant Info'
   -
-    response: '- Provide a [codepen](https://codepen.io/your-work), [codesandbox](https://codesandbox.io/dashboard), or [jsbin](https://jsbin.com/) that reproduces the issue'
+    response: '- Provide a [codepen](https://codepen.io/pen/), [codesandbox](https://codesandbox.io/s/), or [jsbin](https://jsbin.com/) that reproduces the issue'
     requireAll: false
     content:
       - jsbin.com
