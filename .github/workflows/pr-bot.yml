@@ -20,6 +20,4 @@ jobs:
   milestone:
     runs-on: ubuntu-latest
     steps:
-      - uses: benelan/milestone-action@v1.0.0
-        with:
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
+      - uses: benelan/milestone-action@v1.1.0
