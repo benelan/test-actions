@@ -11,9 +11,9 @@ jobs:
   label:
     runs-on: ubuntu-latest
     steps:
-      - uses: srvaroa/labeler@master
+      - uses: srvaroa/labeler@v0.8
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   milestone:
     runs-on: ubuntu-latest
     steps:
