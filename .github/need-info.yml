@@ -21,4 +21,5 @@ requiredItems:
 commentFooter: 'This issue will be automatically closed in a day if the information is not provided. Thanks for your understanding.'
 caseSensitive: true
 exemptUsers:
-  - benelan
+  - maintainer-username1
+  - maintainer-uesername2
