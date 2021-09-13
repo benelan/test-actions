@@ -1,4 +1,4 @@
-name: 'Issue Info'
+name: 'Need Info'
 on:
   issues:
     types: [labeled]
@@ -10,6 +10,4 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: benelan/need-info-action@main
-        with:
-         repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: benelan/need-info-action@1.1.0
