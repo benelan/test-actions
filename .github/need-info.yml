@@ -19,3 +19,4 @@ requiredItems:
       - jsfiddle.net
       - codesandbox.io
 commentFooter: 'This issue will be automatically closed in a day if the information is not provided. Thanks for your understanding.'
+caseSensitive: true
