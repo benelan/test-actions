@@ -1,10 +1,10 @@
 name: 'Issue Info'
 on:
   issues:
-    types: [opened, edited, labeled]
+    types: [labeled]
     branches: [master]
   issue_comment:
-    types: [created, edited]
+    types: [created]
     branches: [master]
 jobs:
   verify:
