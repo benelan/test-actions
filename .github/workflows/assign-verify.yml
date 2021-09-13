@@ -9,4 +9,3 @@ jobs:
     - uses: kyanagimoto/assignee4label@v1.1.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        configuration-path: '.github/verify.yml'
