@@ -9,13 +9,13 @@ requiredItems:
     content:
       - '### Actual Behavior'
       - '### Expected Behavior'
-      - '### Reproduction Steps or Sample'
+      - '### Reproduction Steps and Sample'
       - '### Relevant Info'
   -
     response: '- Provide a [codepen](https://codepen.io/pen/), [codesandbox](https://codesandbox.io/s/), or [jsbin](https://jsbin.com/) that reproduces the issue'
     requireAll: false
     content:
-      - jsbin.com
-      - codepen.io
-      - codesandbox.io
+      - 'https://jsbin.com/'
+      - 'https://codepen.io/'
+      - 'https://codesandbox.io/'
 commentFooter: 'This issue will be automatically closed in three days if the information is not provided. Thanks for your understanding.'
