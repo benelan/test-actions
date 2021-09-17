@@ -2,11 +2,10 @@
 . "$(dirname "$0")/_/husky.sh"
 
 echo "testing"
-git diff --exit-code --name-only -- . ':(exclude)*.md';
-EXIT_STATUS=$?
-if [ $EXIT_STATUS -eq 1 ]; then
+
+FILES=$(git diff --name-only -- . ':(exclude)*.md')
+if [ -z "$FILES" ]; then
     COMMIT_MSG_FILE=$1
     SKIP_CI="[skip ci]"
     echo "$SKIP_CI" >> $COMMIT_MSG_FILE
-fii
-exit $EXIT_STATUS
+fi
