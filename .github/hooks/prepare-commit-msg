@@ -5,6 +5,6 @@ $EXIT_STATUS=$?
 if [ $EXIT_STATUS -eq 1 ]; then
     COMMIT_MSG_FILE=$1
     SKIP_CI="[skip ci]"
-    sed -i.old "1s/^/ $MY_MSG \n /" "$COMMIT_MSG_FILE"
+    $MY_MSG >> $COMMIT_MSG_FILE
 fi
 exit $EXIT_STATUS
