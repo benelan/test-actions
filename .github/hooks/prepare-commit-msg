@@ -1,10 +1,10 @@
 #!/bin/sh
 
-git diff --exit-code --name-only -- . ':(exclude)*.md'
-EXIT_STATUS= echo $?
+git diff --exit-code --name-only -- . ':(exclude)*.md';
+EXIT_STATUS=$?
 if [ $EXIT_STATUS -eq 1 ]; then
     COMMIT_MSG_FILE=$1
     SKIP_CI="[skip ci]"
-    $SKIP_CI >> $COMMIT_MSG_FILE
+    echo $SKIP_CI >> $COMMIT_MSG_FILE
 fi
 exit $EXIT_STATUS
