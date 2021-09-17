@@ -1,12 +1,11 @@
 name: Verify Install
 on:
   issues:
-    types: [ labeled ]
-    branches: [ master ]
+    types: [labeled]
 jobs:
   assign:
     runs-on: ubuntu-latest
-     steps:
+    steps:
       - uses: actions/github-script@v4
         with:
           script: |
