@@ -13,6 +13,12 @@ jobs:
             // See: https://octokit.github.io/rest.js/#pagination
             const label = context.payload.label
             if (label && label.name === "3 - installed") {
+              octokit.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "This issue is installed, assigning to @benelan for verification",
+              });
               await github.issues.update({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
