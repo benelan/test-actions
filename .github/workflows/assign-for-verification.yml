@@ -1,8 +1,7 @@
 name: Verify Install
 on:
   issues:
-    types: [ labeled ]
-    branches: [ master ]
+    types: [labeled]
 jobs:
   assign:
     runs-on: ubuntu-latest
