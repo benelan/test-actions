@@ -1,5 +1,5 @@
 #!/bin/sh
-
+echo "testing"
 git diff --exit-code --name-only -- . ':(exclude)*.md';
 EXIT_STATUS=$?
 if [ $EXIT_STATUS -eq 1 ]; then
