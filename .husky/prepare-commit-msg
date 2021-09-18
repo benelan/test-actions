@@ -2,8 +2,7 @@
 . "$(dirname "$0")/_/husky.sh"
 
 git diff --exit-code --name-only -- . ':(exclude)*.md'
-exit_code=$?
-if [ "$exit_code" -eq 1 ]; then
+if [ "$?" -eq 0 ]; then
     COMMIT_MSG_FILE=$1
     SKIP_CI="[skip ci]"
     echo "$SKIP_CI" >> $COMMIT_MSG_FILE
