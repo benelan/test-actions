@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+files=$(git diff --name-only --cached -- . ':(exclude)*.md')
+if [ ! -z "$files" ]; then
+ echo "[skip cli]" >> $1
+fi
+exit 0
