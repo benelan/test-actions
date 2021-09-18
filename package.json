@@ -1,7 +1,7 @@
 {
   "name": "test-actions",
   "version": "1.0.0",
-  "description": "",
+  "description": "test",
   "main": "index.js",
   "dependencies": {
     "husky": "^7.0.2"
