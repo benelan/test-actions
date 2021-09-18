@@ -3,5 +3,5 @@
 
 # if there are only markdown files, skip ci
 if [ ! $(git diff --name-only --cached -- . ':(exclude)*.md') ]; then
- echo "[skip cli]" >> $1
+ echo "[skip ci]" >> $1
 fi
