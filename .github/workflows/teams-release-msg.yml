@@ -21,6 +21,6 @@ jobs:
         uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
           webhook_uri: ${{ secrets.TEAMS_WEBHOOK_URI }}
-          title: Test
-          summary: Test
-          text: "@General <code>@esri/calcite-components@${{ env.RELEASE_VERSION }}</code> released! 🚀 Check out the [changelog](https://github.com/Esri/calcite-components/blob/master/CHANGELOG.md) for more info."
+          title: ${{ env.RELEASE_VERSION }}
+          summary: ${{ env.RELEASE_VERSION }}
+          text: "<at>e0dafb99.esriIS.onmicrosoft.com@amer.teams.ms</at> <code>@esri/calcite-components@${{ env.RELEASE_VERSION }}</code> released! 🚀\n Check out the [changelog](https://github.com/Esri/calcite-components/blob/master/CHANGELOG.md) for more info."
