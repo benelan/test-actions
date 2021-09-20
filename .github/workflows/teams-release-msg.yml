@@ -1,0 +1,14 @@
+name: Release Notification
+on:
+  release:
+    types: [published]
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Message CC Teams Channel 
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_uri: ${{ secrets.TEAMS_WEBHOOK_URI }}
+          summary: ${{ github.context.payload.release.tag_name }}
+          text: <at>General</at> `@esri/calcite-components@${{ github.context.payload.release.tag_name }} released! 🚀 Check out the [changelog](https://github.com/Esri/calcite-components/blob/master/CHANGELOG.md) for more info.
