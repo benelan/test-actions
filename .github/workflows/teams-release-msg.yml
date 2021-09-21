@@ -16,11 +16,11 @@ jobs:
               return
             }
             core.exportVariable("RELEASE_VERSION", release.tag_name);
-      - name: Wait for npm release
-        run: sleep 30m
-        shell: bash
+#       - name: Wait for npm release
+#         run: sleep 30m
+#         shell: bash
       - name: Notify Teams channel
-      - uses: FTsbrown/msteams-action@master
+        uses: FTsbrown/msteams-action@master
         with: 
           TITLE: ${{ env.RELEASE_VERSION }}
           BODY: "🚀 <code>@esri/calcite-components@${{ env.RELEASE_VERSION }}</code> released! Check out the [changelog](https://github.com/Esri/calcite-components/blob/master/CHANGELOG.md) for more info. 🚀"
