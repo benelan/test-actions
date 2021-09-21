@@ -9,18 +9,18 @@ jobs:
       - uses: actions/github-script@v4
         with:
           script: |
-            const {label, sender} = context.payload
+            const {label, sender, issue} = context.payload
             if (label && label.name === "3 - installed" && sender && sender.login !== "benelan") {
               github.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
+                issue_number: issue.number,
+                owner: issue.owner,
+                repo: issue.repo,
                 body: "This issue is installed, assigning @benelan for verification",
               });
               await github.issues.update({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
+                issue_number: issue.number,
+                owner: issue.owner,
+                repo: issue.repo,
                 assignees: ["benelan"]
               });
             }
