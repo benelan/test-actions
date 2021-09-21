@@ -15,7 +15,7 @@ jobs:
                 issue_number: issue.number,
                 owner: issue.owner,
                 repo: issue.repo,
-                body: "This issue is installed, assigning @benelan for verification",
+                body: "Installed, assigning for verification.",
               });
               await github.issues.update({
                 issue_number: issue.number,
