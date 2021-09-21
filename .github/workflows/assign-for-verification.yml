@@ -19,7 +19,7 @@ jobs:
                 sender && sender.login === "benelan"
                   ? ["jcfranco"]
                   : ["benelan"];
-              github.issues.createComment({
+              await github.issues.createComment({
                 issue_number,
                 owner,
                 repo,
