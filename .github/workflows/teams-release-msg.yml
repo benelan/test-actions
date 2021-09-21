@@ -20,7 +20,8 @@ jobs:
         run: sleep 30m
         shell: bash
       - name: Notify Teams channel
-        uses: dhollerbach/github-action-send-message-to-ms-teams@1.0.10
-        with:
-          webhook: ${{ secrets.TEAMS_WEBHOOK_URI }}
-          message: "🚀 <code>@esri/calcite-components@${{ env.RELEASE_VERSION }}</code> released! Check out the [changelog](https://github.com/Esri/calcite-components/blob/master/CHANGELOG.md) for more info. 🚀"
+      - uses: FTsbrown/msteams-action@master
+        with: 
+          TITLE: ${{ env.RELEASE_VERSION }}
+          BODY: "🚀 <code>@esri/calcite-components@${{ env.RELEASE_VERSION }}</code> released! Check out the [changelog](https://github.com/Esri/calcite-components/blob/master/CHANGELOG.md) for more info. 🚀"
+          MS_TEAMS_WEBHOOK: ${{ secrets.TEAMS_WEBHOOK_URI }}
