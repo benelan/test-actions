@@ -10,11 +10,7 @@ jobs:
         with:
           script: |
             const {label, sender} = context.payload
-            if (sender && sender.login === "benelan") {
-              console.log("Ben doesn't verify his own issues, ending run")
-              return
-            }
-            if (label && label.name === "3 - installed") {
+            if (label && label.name === "3 - installed" && sender && sender.login !== "benelan") {
               github.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
