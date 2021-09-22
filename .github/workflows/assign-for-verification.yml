@@ -9,12 +9,15 @@ jobs:
       - uses: actions/github-script@v4
         with:
           script: |
-            const {label, sender} = context.payload;
-            if (label && label.name === "3 - installed") {
+            const { PRIMARY_CONTACT, SECONDARY_CONTACTS } = github.secrets
+            const { label, sender } = context.payload;
+            if (sender && label && label.name === "3 - installed") {
+              const secondary = SECONDARY_CONTACTS.split(",").map(c => c.trim());
+              const randomUser = secondary[Math.floor(Math.random() * secondary.length)];
               const assignees =
-                sender && sender.login === "benelan"
-                  ? ["jcfranco", "julio8a"]
-                  : ["benelan"];
+                sender.login !== PRIMARY_CONTACT 
+                  ? [PRIMARY_CONTACT] 
+                  : [randomUser]
               await github.issues.createComment({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
