@@ -9,7 +9,7 @@ jobs:
       - uses: actions/github-script@v4
         with:
           script: |
-            const { PRIMARY_CONTACT, SECONDARY_CONTACTS } = github.secrets
+            const { PRIMARY_CONTACT, SECONDARY_CONTACTS } = secrets
             const { label, sender } = context.payload;
             if (sender && label && label.name === "3 - installed") {
               const secondary = SECONDARY_CONTACTS.split(",").map(c => c.trim());
