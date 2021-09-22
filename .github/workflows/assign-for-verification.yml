@@ -21,16 +21,16 @@ jobs:
                 sender.login !== PRIMARY_CONTACT 
                   ? [PRIMARY_CONTACT] 
                   : [randomUser]
-              await github.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: "Installed, assigning for verification.",
-              });
               await github.issues.update({
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 assignees,
+              });
+              await github.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: "Installed and assigned for verification.",
               });
             }
