@@ -18,7 +18,7 @@ jobs:
               const secondary = SECONDARY_CONTACTS.split(",").map(c => c.trim());
               const randomUser = secondary[Math.floor(Math.random() * secondary.length)];
               const assignees =
-                sender.login == PRIMARY_CONTACT 
+                sender.login !== PRIMARY_CONTACT 
                   ? [PRIMARY_CONTACT] 
                   : [randomUser]
               await github.issues.update({
