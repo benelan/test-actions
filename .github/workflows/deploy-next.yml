@@ -19,4 +19,7 @@ jobs:
           touch .env
           echo "require('dotenv').config()" | cat - testScript.js > temp && mv temp testScript.js
           echo PRIMARY_CONTACT=${{ secrets.PRIMARY_CONTACT }} >> .env
-      - run: bash testScript.sh
+      - run: bash testScript.sh\
+        env: 
+           PRIMARY_CONTACT: ${{ secrets.PRIMARY_CONTACT }}
+         
