@@ -12,4 +12,4 @@ jobs:
         with:
           node-version: "14"
       - run: npm install
-      - run: bash /support/deployNextFromTravisWrapper.sh
+      - run: bash testScript.sh
