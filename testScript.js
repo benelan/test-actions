@@ -1,1 +1,1 @@
-console.log(process.env.PRIMARY_CONTACT)
+console.log(`node: ${process.env.PRIMARY_CONTACT}`)
