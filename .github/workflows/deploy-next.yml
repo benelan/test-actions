@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ secrets.PRIMARY_CONTACT }} == "benelan"
     steps:
+      - name: deploy to next
+        env:
+           PRIMARY_CONTACT: ${{ secrets.PRIMARY_CONTACT }}
+        if: ${{ env.PRIMARY_CONTACT }} == "benelan"
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
