@@ -6,4 +6,4 @@ jobs:
     steps:
       - name: report
         id: report
-        run: xdg-open href='https://screener.io/v2
+        run: xdg-open https://screener.io/v2
