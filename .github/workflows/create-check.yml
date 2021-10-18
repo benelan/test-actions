@@ -6,4 +6,15 @@ jobs:
     steps:
       - name: report
         id: report
-        run: xdg-open https://screener.io/v2
+        run:
+          echo "::set-output name=report::https://screener.io/v2"
+      - name: set status
+        if: always()
+        uses: Sibz/github-status-action@v1
+          with:
+            authToken: ${{secrets.GITHUB_TOKEN}}
+            context: 'Screener Report'
+            description: ${{ steps.report.outputs.report }}
+            state:  ${{ job.status }}
+            sha: ${{github.event.pull_request.head.sha || github.sha}}
+            target_url: ${{ steps.report.outputs.report }}
