@@ -1,5 +1,5 @@
 name: Screener
-on: [pull_request_target]
+on: [push] # test
 jobs:
   test:
     runs-on: ubuntu-latest
