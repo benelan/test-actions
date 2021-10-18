@@ -6,4 +6,4 @@ jobs:
     steps:
       - name: report
         id: report
-        run: echo "::notice::<a href='https://screener.io/v2'>Screener Report</a>"
+        run: xdg-open href='https://screener.io/v2
