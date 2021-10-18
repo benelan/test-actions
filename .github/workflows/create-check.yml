@@ -1,5 +1,5 @@
 name: Screener
-on: [push] # test
+on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
