@@ -1,0 +1,25 @@
+name: Deploy Next
+on:
+  push:
+    branches: [master]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+        env:
+           PRIMARY_CONTACT: ${{ secrets.PRIMARY_CONTACT }}
+        if: ${{ env.PRIMARY_CONTACT }} == "benelan"
+      - run: npm install
+      - run: |
+          npm install dotenv
+          touch .env
+          echo "require('dotenv').config()" | cat - testScript.js > temp && mv temp testScript.js
+          echo PRIMARY_CONTACT=${{ secrets.PRIMARY_CONTACT }} >> .env
+      - run: bash testScript.sh\
+        env: 
+           PRIMARY_CONTACT: ${{ secrets.PRIMARY_CONTACT }}
+         
