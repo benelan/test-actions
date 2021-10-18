@@ -1,4 +1,4 @@
-name: Screener
+name: Screener # testing
 on: [pull_request_target]
 jobs:
   test:
@@ -8,13 +8,14 @@ jobs:
         id: report
         run:
           echo "::set-output name=report::https://screener.io/v2"
+      - uses: actions/checkout@v2
       - name: set status
         if: always()
         uses: Sibz/github-status-action@v1
-          with:
-            authToken: ${{secrets.GITHUB_TOKEN}}
-            context: 'Screener Report'
-            description: ${{ steps.report.outputs.report }}
-            state:  ${{ job.status }}
-            sha: ${{github.event.pull_request.head.sha || github.sha}}
-            target_url: ${{ steps.report.outputs.report }}
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: 'Screener Report'
+          description: ${{ steps.report.outputs.report }}
+          state:  ${{ job.status }}
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
+          target_url: ${{ steps.report.outputs.report }}
