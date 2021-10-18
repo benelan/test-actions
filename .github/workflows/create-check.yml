@@ -1,4 +1,4 @@
-name: Screener # testing
+name: Screener # test
 on: [pull_request_target]
 jobs:
   test:
