@@ -17,6 +17,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: Screener Report
           conclusion: ${{ job.status }}
-          details_url: ${{ steps.report.outputs.report }}
           output: |
             {"summary": "View report on Screener: ${{ steps.report.outputs.report }}"}
