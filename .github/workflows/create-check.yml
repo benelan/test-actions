@@ -1,0 +1,22 @@
+name: Create Check
+on:
+  pull_request_target:
+    branches: [master]
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - name: report
+        id: report
+        if: always()
+        run: echo "::set-output name=report::https://screener.io/v2/"
+      - name: create output
+        uses: LouisBrunner/checks-action@v1.1.1
+        if: always()
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Screener Report
+          conclusion: ${{ job.status }}
+          details_url: ${{ steps.report.outputs.report }}
+          output: |
+            {"summary": "View report on Screener: ${{ steps.report.outputs.report }}"}

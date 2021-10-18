@@ -1,5 +1,5 @@
 {
-  "name": "test-actions",
+  "name": "test",
   "version": "1.0.0",
   "description": "test",
   "main": "index.js",
@@ -14,12 +14,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/benelan/test-actions.git"
+    "url": "git+https://github.com/benelan/test.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/benelan/test-actions/issues"
+    "url": "https://github.com/benelan/test/issues"
   },
-  "homepage": "https://github.com/benelan/test-actions#readme"
+  "homepage": "https://github.com/benelan/test#readme"
 }
