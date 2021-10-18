@@ -6,7 +6,6 @@ jobs:
     steps:
       - name: report
         id: report
-        if: always()
         run:
           echo "::set-output name=report::https://screener.io/v2/"
       - name: create output
