@@ -1,20 +1,9 @@
 name: Screener
-on: [push] # test
+on: [pull_request_target]
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - name: report
         id: report
-        run:
-          echo "::set-output name=report::https://screener.io/v2"
-      - name: create output
-        uses: LouisBrunner/checks-action@v1.1.1
-        if: always()
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          name: view report
-          conclusion: ${{ job.status }}
-          details_url: ${{ steps.report.outputs.report }}
-          output: |
-            {"summary": "View report on Screener: ${{ steps.report.outputs.report }}"}
+        run: echo "::notice::<a href='https://screener.io/v2'>Screener Report</a>"
