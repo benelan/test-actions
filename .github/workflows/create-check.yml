@@ -1,7 +1,7 @@
 name: Screener
 on: [pull_request_target] # test
 jobs:
-  create:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: report
@@ -13,7 +13,7 @@ jobs:
         if: always()
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: View Report
+          name: view report
           conclusion: ${{ job.status }}
           details_url: ${{ steps.report.outputs.report }}
           output: |
