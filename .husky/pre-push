@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 
 # from https://riptutorial.com/git/example/16164/pre-push
 
