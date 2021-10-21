@@ -14,8 +14,8 @@ jobs:
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
-          context: 'Screener Report'
-          description: ${{ steps.report.outputs.report }}
+          context: Screener Report
+          description: Click details to view the report on Screener
           state:  ${{ job.status }}
           sha: ${{github.event.pull_request.head.sha || github.sha}}
           target_url: ${{ steps.report.outputs.report }}
