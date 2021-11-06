@@ -37,7 +37,7 @@ HEAD_REPO=$(echo "$pr_resp" | jq -r .head.repo.full_name)
 HEAD_BRANCH=$(echo "$pr_resp" | jq -r .head.ref)
 
 echo
-echo "  'Nightly Merge Action' is using the following input:"
+echo "  'Auto Merge Action' is using the following input:"
 echo "    - branch to merge = '$BRANCH_TO_MERGE'"
 echo "    - branch to checkout and merge into = '$HEAD_BRANCH'"
 echo "    - allow_ff = $INPUT_ALLOW_FF"
@@ -71,7 +71,7 @@ if ! $INPUT_ALLOW_FORKS; then
   AUTH_HEADER="Authorization: token $GITHUB_TOKEN"
   pr_resp=$(curl -X GET -s -H "${AUTH_HEADER}" -H "${API_HEADER}" "${URI}/repos/$GITHUB_REPOSITORY")
   if [[ "$(echo "$pr_resp" | jq -r .fork)" != "false" ]]; then
-    echo "Nightly merge action is disabled for forks (use the 'allow_forks' option to enable it)."
+    echo "Auto merge action is disabled for forks (use the 'allow_forks' option to enable it)."
     exit 0
   fi
 fi
@@ -83,10 +83,10 @@ git config --global user.email "$INPUT_USER_EMAIL"
 set -o xtrace
 
 git fetch origin $BRANCH_TO_MERGE
-git checkout -b $BRANCH_TO_MERGE origin/$BRANCH_TO_MERGE
+git checkout $BRANCH_TO_MERGE
 
 git fetch origin $HEAD_BRANCH
-git checkout -b $HEAD_BRANCH origin/$HEAD_BRANCH
+git checkout $HEAD_BRANCH
 
 if git merge-base --is-ancestor $BRANCH_TO_MERGE $HEAD_BRANCH; then
   echo "No merge is necessary"
@@ -95,7 +95,7 @@ fi;
 
 set +o xtrace
 echo
-echo "  'Nightly Merge Action' is trying to merge the '$BRANCH_TO_MERGE' branch ($(git log -1 --pretty=%H $BRANCH_TO_MERGE))"
+echo "  'Auto Merge Action' is trying to merge the '$BRANCH_TO_MERGE' branch ($(git log -1 --pretty=%H $BRANCH_TO_MERGE))"
 echo "  into the '$HEAD_BRANCH' branch ($(git log -1 --pretty=%H $HEAD_BRANCH))"
 echo
 set -o xtrace
