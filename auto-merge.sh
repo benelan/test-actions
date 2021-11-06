@@ -45,6 +45,5 @@ set -o xtrace
 git fetch
 
 # do the merge
-git checkout $HEAD_BRANCH
 git merge $BRANCH_TO_MERGE --no-edit
 git push origin $HEAD_BRANCH
