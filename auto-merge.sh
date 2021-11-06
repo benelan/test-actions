@@ -42,9 +42,9 @@ git config --global user.name "GitHub Merge Action"
 
 set -o xtrace
 
-git fetch origin $HEAD_BRANCH
+git fetch
 
 # do the merge
-git checkout -b $HEAD_BRANCH origin/$HEAD_BRANCH
-git merge $BRANCH_TO_MERGE --no-edit --allow-unrelated-histories
+git checkout $HEAD_BRANCH
+git merge $BRANCH_TO_MERGE --no-edit
 git push origin $HEAD_BRANCH
