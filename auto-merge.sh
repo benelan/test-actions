@@ -1,8 +1,9 @@
 #!/bin/bash
 
+# shamelessly stolen from https://github.com/lots0logs/gh-action-auto-merge
 set -e
 
-# skip if no /revert
+# skip if no /merge
 echo "Checking if contains '/merge' command..."
 (jq -r ".comment.body" "$GITHUB_EVENT_PATH" | grep -E "/merge") || exit 78
 
@@ -10,7 +11,6 @@ echo "Checking if contains '/merge' command..."
 echo "Checking if a PR command..."
 (jq -r ".issue.pull_request.url" "$GITHUB_EVENT_PATH") || exit 78
 
-# get the SHA to revert
 BRANCH_TO_MERGE=$(jq -r ".comment.body" "$GITHUB_EVENT_PATH" | cut -c 8-)
 
 if [[ "$(jq -r ".action" "$GITHUB_EVENT_PATH")" != "created" ]]; then
