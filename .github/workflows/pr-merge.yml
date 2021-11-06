@@ -9,3 +9,5 @@ jobs:
            chmod +x auto-merge.sh
            ./auto-merge.sh
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
