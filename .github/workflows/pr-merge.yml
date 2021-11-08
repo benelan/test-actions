@@ -10,6 +10,5 @@ jobs:
         uses: Goobles/gh-actions-merge-command@v1
         with:
           allow_ff: false
-          user_name: ${{ github.event.issue_comment.issue.user.login }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
