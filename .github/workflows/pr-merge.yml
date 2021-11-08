@@ -5,8 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: Goobles/gh-actions-merge-command@v1
+      - name: merge
+        if: ${{ github.event.issue_comment.issue.user.login }} == ${{ github.actor }}
+        uses: Goobles/gh-actions-merge-command@v1
         with:
           allow_ff: false
+          user_name: ${{ github.event.issue_comment.issue.user.login }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
