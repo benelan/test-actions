@@ -1,4 +1,4 @@
-# test
+# Test
 Repo for testing GitHub Actions and other fun automation stuff.
 
 ## My actions
