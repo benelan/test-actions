@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - run: echo ${{ github.event.issue_comment.issue.user.login }} --- ${{ github.actor }}
       - name: merge
         if: ${{ github.event.issue_comment.issue.user.login }} == ${{ github.actor }}
         uses: Goobles/gh-actions-merge-command@v1
