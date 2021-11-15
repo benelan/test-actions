@@ -13,7 +13,7 @@ jobs:
         if: always()
         uses: Sibz/github-status-action@v1
         with:
-          authToken: ${{secrets.GITHUB_TOKEN}}
+          authToken: ${{secrets.ADMIN_TOKEN}}
           context: Screener Report
           description: Click details to view the report on Screener
           state:  ${{ job.status }}
