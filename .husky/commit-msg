@@ -6,4 +6,6 @@
 #     COMMIT_MSG_FILE=$1
 #     SKIP_CI="[skip ci]"
 #     echo "$SKIP_CI" >> $COMMIT_MSG_FILE
-# finpx --no -- commitlint --edit 
+# fi
+
+# npx --no -- commitlint --edit
