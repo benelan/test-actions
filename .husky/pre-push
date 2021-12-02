@@ -9,7 +9,7 @@ first_commit_branch=$(git log --format=%H $current_branch --not $protected_branc
 last_commit_branch=$(git rev-parse HEAD)
 
 # at least one commit on the branch needs to be conventional
-commitlint --from $first_commit_branch --to $last_commit_branch
+npx --no -- commitlint --from $first_commit_branch --to $last_commit_branch
 
 if [ $protected_branch = $current_branch ] && [ exec < /dev/tty ]
 then
