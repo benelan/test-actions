@@ -17,6 +17,7 @@ then
     fi
     exit 1
 else
+    has_conventional_commit=1
     conventional_commit_regex='^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+\))?(!)?(: (.*\s*)*))|(Merge (.*\s*)*)|(Initial commit$)'
 
     commit_messages=$(git log --format=%B $current_branch --not $protected_branch | tr '\n' ',')
@@ -25,7 +26,7 @@ else
 
     for message in ${array[@]}
     do
-        [[ $message =~ $conventional_commit_regex ]] && exit 0
+        [[ $message =~ $conventional_commit_regex ]] && has_conventional_commit=0
     done
-    exit 1
+    exit $has_conventional_commit
 fi
