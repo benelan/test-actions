@@ -1,19 +1,34 @@
 #!/bin/bash
 
+# from https://riptutorial.com/git/example/16164/pre-push
+
 protected_branch='master'
 current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
-# first_commit_branch=$(git log --format=%H $current_branch --not $protected_branch | tail -1)
-# last_commit_branch=$(git rev-parse HEAD)
 
-conventional_commit_regex='^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+\))?(!)?(: (.*\s*)*))|(Merge (.*\s*)*)|(Initial commit$)'
+if [ $protected_branch = $current_branch ] && [ exec < /dev/tty ]
+then
+    read -p "You're about to push master, is that what you intended? [y|n] " -n 1 -r < /dev/tty
+    echo
+    if echo $REPLY | grep -E '^[Yy]$' > /dev/null
+    then
+        exit 0
+    fi
+    exit 1
+else
+    exit_code=1
+    conventional_commit_regex='^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+\))?(!)?(: (.*\s*)*))|(Merge (.*\s*)*)|(Initial commit$)'
 
-commit_messages=$(git log --format=%B $current_branch --not $protected_branch | tr '\n' ',')
-IFS=',,'
-read -a array <<< $commit_messages
+    commit_messages=$(git log --format=%B $current_branch --not $protected_branch | tr '\n' ',')
 
-for message in ${array[@]}
-do
-    [[ $message =~ $conventional_commit_regex ]] && exit 0
-done
-exit 1
+    while [ "$commit_messages" != "$iteration" ]; do
+        # extract the substring from start of string up to delimiter.
+        iteration=${commit_messages%%,,*}
+        # delete this first "element" AND next separator.
+        commit_messages="${commit_messages#$iteration,,}"
+        # match conventional commit regex
+        [[ $iteration =~ $conventional_commit_regex ]] && exit_code=0
+    done
+    echo $exit_code
+    exit $exit_code
+fi
