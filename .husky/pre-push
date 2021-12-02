@@ -17,10 +17,10 @@ then
     fi
     exit 1
 else
+    exit_code=1
     conventional_commit_regex='^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+\))?(!)?(: (.*\s*)*))|(Merge (.*\s*)*)|(Initial commit$)'
 
     commit_messages=$(git log --format=%B $current_branch --not $protected_branch | tr '\n' ',')
-    echo $commit_messages
 
     while [ "$commit_messages" != "$iteration" ]; do
         # extract the substring from start of string up to delimiter.
@@ -28,8 +28,7 @@ else
         # delete this first "element" AND next separator.
         commit_messages="${commit_messages#$iteration,,}"
         # match conventional commit regex
-        echo $iteraction
-        [[ $iteration =~ $conventional_commit_regex ]] && exit 0
+        [[ $iteration =~ $conventional_commit_regex ]] && exit_code=0
     done
-    exit 1
-fi
+    echo $exit_code
+    exit $exit_code
