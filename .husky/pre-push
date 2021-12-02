@@ -28,5 +28,5 @@ else
     do
         [[ $message =~ $conventional_commit_regex ]] && has_conventional_commit=0
     done
-    exit $has_conventional_commit
+    exit 0
 fi
