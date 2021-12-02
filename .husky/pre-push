@@ -17,16 +17,16 @@ then
     fi
     exit 1
 else
-    has_conventional_commit=1
-    conventional_commit_regex='^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+\))?(!)?(: (.*\s*)*))|(Merge (.*\s*)*)|(Initial commit$)'
+    # has_conventional_commit=1
+    # conventional_commit_regex='^((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+\))?(!)?(: (.*\s*)*))|(Merge (.*\s*)*)|(Initial commit$)'
 
-    commit_messages=$(git log --format=%B $current_branch --not $protected_branch | tr '\n' ',')
-    IFS=',,'
-    read -a array <<< $commit_messages
+    # commit_messages=$(git log --format=%B $current_branch --not $protected_branch | tr '\n' ',')
+    # IFS=',,'
+    # read -a array <<< $commit_messages
 
-    for message in ${array[@]}
-    do
-        [[ $message =~ $conventional_commit_regex ]] && has_conventional_commit=0
-    done
+    # for message in ${array[@]}
+    # do
+    #     [[ $message =~ $conventional_commit_regex ]] && has_conventional_commit=0
+    # done
     exit 0
 fi
