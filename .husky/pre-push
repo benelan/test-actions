@@ -6,10 +6,18 @@
 protected_branch='master'
 current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
-first_commit_branch=$(git log --format=%H $current_branch --not $protected_branch | tail -1)
-last_commit_branch=$(git rev-parse HEAD)
+# first_commit_branch=$(git log --format=%H $current_branch --not $protected_branch | tail -1)
+# last_commit_branch=$(git rev-parse HEAD)
 
-npx --no -- commitlint --from $first_commit_branch --to $last_commit_branch
+conventional_commit_regex='^(?<type>build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(?<scope>\(\w+\)?((?=:\s)|(?=!:\s)))?(?<breaking>!)?(?<subject>:\s.*)?|^(?<merge>Merge \w+)'
+
+commit_messages=$(git log --format=%B $current_branch --not $protected_branch | tr '\n' ',')
+IFS=$',,' read -a array <<< $commit_messages
+
+for message in "${array[@]}"
+do
+    [[ $message =~ conventional_commit_regex ]] && exit 1
+done
 
 if [ $protected_branch = $current_branch ] && [ exec < /dev/tty ]
 then
