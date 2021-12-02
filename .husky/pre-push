@@ -8,6 +8,7 @@ current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 first_commit_branch=$(git log $protected_branch..HEAD --oneline --format="%H" | tail -1)
 last_commit_branch=$(git rev-parse HEAD)
 
+# check if any of the commits on the current branch are conventional
 commitlint --from $first_commit_branch --to $last_commit_branch
 
 if [ $protected_branch = $current_branch ] && [ exec < /dev/tty ]
