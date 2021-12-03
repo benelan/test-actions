@@ -13,13 +13,13 @@ jobs:
           screenable_changes=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.md')
           if [ -z "$screenable_changes" ]; then
             echo "skip screener"
-            echo "::set-output name=skip::true"
+            echo "::set-output name=skip::skip"
           else
             echo "run screener"
-            echo "::set-output name=skip::false"
+            echo "::set-output name=skip::run"
           fi
       - name: run screener
-        if: ${{ steps.skip.outputs.skip }} == false
+        if: ${{ steps.skip.outputs.skip == "run" }}
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
@@ -28,7 +28,7 @@ jobs:
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
       - name: set skip status
-        if: ${{ steps.skip.outputs.skip }} == true
+        if: ${{ steps.skip.outputs.skip == "skip" }}
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
