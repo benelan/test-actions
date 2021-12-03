@@ -12,12 +12,12 @@ jobs:
           current_branch=$(git rev-parse --abbrev-ref HEAD)
           screenable_files=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.yml')
           if [ $screenable_files ]; then
-            exit 0
+            echo "::set-output name=skip::false"
           else
-            exit 1
+            echo "::set-output name=skip::true"
           fi
       - name: run screener
-        if: steps.skip.conclusion == 'success'
+        if: ${{ steps.skip.outputs.skip }} == 'success'
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
@@ -26,7 +26,7 @@ jobs:
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
       - name: set skip status
-        if: steps.skip.conclusion == 'failure'
+        if: ${{ steps.skip.outputs.skip }} == 'false'
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
