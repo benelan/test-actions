@@ -8,6 +8,7 @@ jobs:
       - name: skip for markdown only
         id: skip
         run: |
+          git fetch --deepen=100
           current_branch=$(git rev-parse --abbrev-ref HEAD)
           screenable_files=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.yml')
           if [ $screenable_files ]; then
