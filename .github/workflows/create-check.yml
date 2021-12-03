@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: skip for markdown only
-        id: skip
+        id: one
         run: |
           git fetch --deepen=100
           current_branch=$(git rev-parse --abbrev-ref HEAD)
@@ -18,21 +18,21 @@ jobs:
             echo "run screener"
             echo "::set-output name=skip::screen"
           fi
-      - name: set skip status
-        if: ${{ steps.skip.outputs.skip }} == "skip"
+      - if: steps.one.outputs.skip == 'skip'
+        name: skip screener
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
           context: screener
-          description: Screener report skipped
+          description: Skip Screener
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
-      - name: run screener
-        if: ${{ steps.skip.outputs.skip }} == "screen"
+      - if: steps.one.outputs.skip == 'screen'
+        name: run screener
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
           context: screener
-          description: Run screener
+          description: Run Screener
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
