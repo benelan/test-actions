@@ -12,8 +12,10 @@ jobs:
           current_branch=$(git rev-parse --abbrev-ref HEAD)
           screenable_changes=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.md')
           if [ -z "$screenable_changes" ]; then
+            echo "skip screener"
             echo "::set-output name=skip::true"
           else
+            echo "run screener"
             echo "::set-output name=skip::false"
           fi
       - name: run screener
