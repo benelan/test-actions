@@ -18,15 +18,6 @@ jobs:
             echo "run screener"
             echo "::set-output name=skip::screen"
           fi
-      - name: run screener
-        if: ${{ steps.skip.outputs.skip }} == "screen"
-        uses: Sibz/github-status-action@v1
-        with:
-          authToken: ${{secrets.ADMIN_TOKEN}}
-          context: screener
-          description: Run screener
-          state:  success
-          sha: ${{github.event.pull_request.head.sha || github.sha}}
       - name: set skip status
         if: ${{ steps.skip.outputs.skip }} == "skip"
         uses: Sibz/github-status-action@v1
@@ -34,5 +25,14 @@ jobs:
           authToken: ${{secrets.ADMIN_TOKEN}}
           context: screener
           description: Screener report skipped
+          state:  success
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
+      - name: run screener
+        if: ${{ steps.skip.outputs.skip }} == "screen"
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.ADMIN_TOKEN}}
+          context: screener
+          description: Run screener
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
