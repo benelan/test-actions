@@ -9,7 +9,7 @@ jobs:
         run: |
           git fetch
           current_branch=$(git rev-parse --abbrev-ref HEAD)
-          const screenable_files=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.yml')
+          screenable_files=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.yml')
           if [ ! $screenable_files ]; then
             exit 0
           fi
