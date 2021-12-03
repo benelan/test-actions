@@ -24,7 +24,6 @@ jobs:
           description: Run screener
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
-
       - name: set skip status
         if: steps.skip.conclusion == 'failure'
         uses: Sibz/github-status-action@v1
@@ -34,4 +33,3 @@ jobs:
           description: Screener report skipped
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
-      -
