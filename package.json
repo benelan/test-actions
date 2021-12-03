@@ -10,11 +10,13 @@
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
     "husky": "^7.0.0",
-    "ts-node": "^10.4.0"
+    "pify": "5.0.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
   },
   "scripts": {
     "prepare": "husky install",
-    "util:conventional-commit": "ts-node --project support/matchConventionalCommit.ts"
+    "util:conventional-commit": "ts-node --project ./tsconfig-node-scripts.json support/matchConventionalCommit.ts"
   },
   "repository": {
     "type": "git",
