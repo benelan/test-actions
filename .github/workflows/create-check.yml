@@ -6,10 +6,10 @@ jobs:
     steps:
       - name: skip for markdown only
         run: |
-        current_branch=$(git rev-parse --abbrev-ref HEAD)
-        if [ ! git diff --name-only $current_branch $(git merge-base $current_branch master) -- . ':(exclude)*.md']; then;
-          exit 0
-        fi
+          current_branch=$(git rev-parse --abbrev-ref HEAD)
+          if [ ! git diff --name-only $current_branch $(git merge-base $current_branch master) -- . ':(exclude)*.md']; then;
+            exit 0
+          fi
       - name: report
         id: report
         run:
