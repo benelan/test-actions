@@ -29,6 +29,6 @@ else
         # match conventional commit regex
         [[ "$iteration" =~ $conventional_commit_regex ]] && exit_code=0
     done
-    [[ $exit_code -eq 1 ]] && printf "Error: please make a conventional commit\nhttps://github.com/Esri/calcite-components/blob/master/CONTRIBUTING.md#commit-message-format"
+    [[ $exit_code -eq 1 ]] && printf "Error: please make a conventional commit\nhttps://github.com/Esri/calcite-components/blob/master/CONTRIBUTING.md#commit-message-format\n"
     exit $exit_code
 fi
