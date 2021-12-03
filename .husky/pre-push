@@ -1,11 +1,9 @@
 #!/bin/bash
-#. "$(dirname "$0")/_/husky.sh"
 
 # from https://riptutorial.com/git/example/16164/pre-push
 
 protected_branch='master'
 current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
-
 
 if [ $protected_branch = $current_branch ] && [ exec < /dev/tty ]
 then
