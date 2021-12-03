@@ -10,8 +10,8 @@ jobs:
         run: |
           git fetch --deepen=100
           current_branch=$(git rev-parse --abbrev-ref HEAD)
-          screenable_changes=$(git diff --exit-code --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.md')
-          if [ $screenable_changes -eq 0 ]; then
+          screenable_changes=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.md')
+          if [ -z $screenable_changes ]; then
             echo "::set-output name=skip::true"
           else
             echo "::set-output name=skip::false"
