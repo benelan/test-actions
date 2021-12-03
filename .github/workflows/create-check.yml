@@ -17,7 +17,7 @@ jobs:
             echo "::set-output name=skip::false"
           fi
       - name: run screener
-        if: ${{ steps.skip.outputs.skip }} == 'false'
+        if: steps.skip.outputs.skip == false
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
@@ -26,7 +26,7 @@ jobs:
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
       - name: set skip status
-        if: ${{ steps.skip.outputs.skip }} == 'true'
+        if: steps.skip.outputs.skip == true
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
