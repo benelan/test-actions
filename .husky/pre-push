@@ -29,6 +29,6 @@ else
         # match conventional commit regex
         [[ "$iteration" =~ $conventional_commit_regex ]] && exit_code=0
     done
-    [[ $exit_code = 1]] && echo "Please make a conventional commit"
+    if [ $exit_code = 1] && echo "Please make a conventional commit"
     exit $exit_code
 fi
