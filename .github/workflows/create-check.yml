@@ -9,7 +9,7 @@ jobs:
         run: |
           git fetch
           current_branch=$(git rev-parse --abbrev-ref HEAD)
-          if [ ! git diff --name-only $current_branch $(git merge-base $current_branch master) -- . ':(exclude)*.yml' ]; then
+          if [ ! git diff --name-only "$current_branch" $(git merge-base "$current_branch" master) -- . ':(exclude)*.yml' ]; then
             exit 0
           fi
       - name: report
