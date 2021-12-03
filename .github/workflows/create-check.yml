@@ -4,6 +4,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: skip for markdown only
         run: |
           current_branch=$(git rev-parse --abbrev-ref HEAD)
@@ -14,7 +15,6 @@ jobs:
         id: report
         run:
           echo "::set-output name=report::https://screener.io/v2"
-      - uses: actions/checkout@v2
       - name: set status
         if: always()
         uses: Sibz/github-status-action@v1
