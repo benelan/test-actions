@@ -28,10 +28,10 @@ else
         # delete this first "element" AND next separator.
         commit_messages=${commit_messages#$iteration,,}
         # match conventional commit regex
-        # [[ "$iteration" =~ $conventional_commit_regex ]] && exit_code=0
-        if expr "$iteration" : "$conventional_commit_regex"; 1>/dev/null; then
-            exit_code=1
-        fi
+        [[ "$iteration" =~ $conventional_commit_regex ]] && exit_code=0
+        # if expr "$iteration" : "$conventional_commit_regex"; 1>/dev/null; then
+        #     exit_code=0
+        # fi
     done
     echo $exit_code
     exit $exit_code

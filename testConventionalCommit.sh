@@ -29,8 +29,8 @@ else
         commit_messages=${commit_messages#$iteration,,}
         # match conventional commit regex
         # [[ "$iteration" =~ $conventional_commit_regex ]] && exit_code=0
-        if expr "$iteration" : "$conventional_commit_regex"; 1>/dev/null; then
-            exit_code=1
+        if expr "$iteration" : "((build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+\))?(!)?(: (.*\s*)*))" 1>/dev/null; then
+            exit_code=0
         fi
     done
     echo $exit_code
