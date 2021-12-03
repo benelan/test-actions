@@ -1,4 +1,4 @@
-name: Screener #test
+name: Screener Check
 on: [pull_request]
 jobs:
   test:
@@ -6,24 +6,32 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: skip for markdown only
+        id: skip
         run: |
-          git fetch
           current_branch=$(git rev-parse --abbrev-ref HEAD)
           screenable_files=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.yml')
-          if [ ! $screenable_files ]; then
+          if [ $screenable_files ]; then
             exit 0
+          else
+            exit 1
           fi
-      - name: report
-        id: report
-        run:
-          echo "::set-output name=report::https://screener.io/v2"
-      - name: set status
-        if: always()
+      - name: run screener
+        if: steps.skip.conclusion == 'success'
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
-          context: Screener Report
-          description: Click details to view the report on Screener
-          state:  ${{ job.status }}
+          context: screener
+          description: Run screener
+          state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
-          target_url: ${{ steps.report.outputs.report }}
+
+      - name: set skip status
+        if: steps.skip.conclusion == 'failure'
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.ADMIN_TOKEN}}
+          context: screener
+          description: Screener report skipped
+          state:  success
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
+      -
