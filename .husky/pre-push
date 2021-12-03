@@ -33,5 +33,6 @@ else
             exit_code=1
         fi
     done
+    echo $exit_code
     exit $exit_code
 fi
