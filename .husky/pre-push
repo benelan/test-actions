@@ -3,6 +3,7 @@
 
 protected_branch='master'
 current_branch=$(git rev-parse --abbrev-ref HEAD)
+echo "$current_branch"
 
 if [ $protected_branch = $current_branch ] && [ exec < /dev/tty ]
 then
