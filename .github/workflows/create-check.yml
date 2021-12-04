@@ -1,5 +1,10 @@
 name: Screener Check
-on: [pull_request]
+on:
+  pull_request:
+    branches: [master]
+  # need to run on the base branch when merging to keep the baseline state up to date
+  push:
+    branches: [master]
 jobs:
   test:
     runs-on: ubuntu-latest
