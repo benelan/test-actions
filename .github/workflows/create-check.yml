@@ -19,11 +19,11 @@ jobs:
           if [ "$current_branch" == "master"]; then
             # diff of last commit excluding md (assumes squash merge)
             screenable_changes=$(git diff --name-only @~..@ -- . ':(exclude)*.md')
-            echo "$screenable_changes"
+            echo "on master for pushes"
           else
             # diff of branch excluding md
             screenable_changes=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.md')
-            echo "$screenable_changes"
+            echo "on branch for prs"
           fi
           echo "$screenable_changes"
           # skip if there are only md changes
