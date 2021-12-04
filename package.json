@@ -1,7 +1,7 @@
 {
   "name": "test",
   "version": "1.0.0",
-  "description": "test",
+  "description": "test repo",
   "main": "index.js",
   "dependencies": {
     "husky": "^7.0.2"
