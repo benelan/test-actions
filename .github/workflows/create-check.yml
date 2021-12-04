@@ -16,7 +16,7 @@ jobs:
           git fetch --deepen=100
           current_branch=$(git rev-parse --abbrev-ref HEAD)
           echo "$current_branch"
-          if [ "$current_branch" == "master"]; then
+          if [ "$current_branch" == "master" ]; then
             # diff of last commit excluding md (assumes squash merge)
             screenable_changes=$(git diff --name-only @~..@ -- . ':(exclude)*.md')
             echo "on master for pushes"
