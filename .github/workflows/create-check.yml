@@ -1,21 +1,43 @@
-name: Screener #test
-on: [pull_request]
+name: Screener Check
+on:
+  pull_request:
+    branches: [master]
+  # need to run on the base branch when merging to keep the baseline state up to date
+  push:
+    branches: [master]
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: report
-        id: report
-        run:
-          echo "::set-output name=report::https://screener.io/v2"
       - uses: actions/checkout@v2
-      - name: set status
-        if: always()
+      - name: skip for markdown only
+        id: one
+        run: |
+          git fetch --deepen=100
+          current_branch=$(git rev-parse --abbrev-ref HEAD)
+          screenable_changes=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.md')
+          if [ -z "$screenable_changes" ]; then
+            echo "skip screener"
+            echo "::set-output name=skip::skip"
+          else
+            echo "run screener"
+            echo "::set-output name=skip::screen"
+          fi
+      - if: steps.one.outputs.skip == 'skip'
+        name: skip screener
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{secrets.ADMIN_TOKEN}}
-          context: Screener Report
-          description: Click details to view the report on Screener
-          state:  ${{ job.status }}
+          context: screener
+          description: Skip Screener
+          state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
-          target_url: ${{ steps.report.outputs.report }}
+      - if: steps.one.outputs.skip == 'screen'
+        name: run screener
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.ADMIN_TOKEN}}
+          context: screener
+          description: Run Screener
+          state:  success
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
