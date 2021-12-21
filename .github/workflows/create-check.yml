@@ -29,12 +29,12 @@ jobs:
           # skip if there are only md changes
           if [ -z "$screenable_changes" ]; then
             echo "skip screener"
-            echo "::set-output name=skip::skip"
+            echo "::set-output name=skip::true"
           else
-            echo "run screener"
-            echo "::set-output name=skip::screen"
+            echo "skip screener"
+            echo "::set-output name=skip::false"
           fi
-      - if: steps.one.outputs.skip == 'skip'
+      - if: steps.one.outputs.skip == 'true'
         name: skip screener
         uses: Sibz/github-status-action@v1
         with:
@@ -43,7 +43,7 @@ jobs:
           description: Skip Screener
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
-      - if: steps.one.outputs.skip == 'screen'
+      - if: steps.one.outputs.skip == 'false'
         name: run screener
         uses: Sibz/github-status-action@v1
         with:
