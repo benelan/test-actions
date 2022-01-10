@@ -66,5 +66,5 @@ body:
       options:
         - label: CDN
           required: false
-        - NPM package
+        - label: NPM package
           required: false
