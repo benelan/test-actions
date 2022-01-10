@@ -5,10 +5,9 @@ body:
  - type: markdown
     attributes:
       value: |
-        * Before submitting an issue, please check to see if the issue already exists: https://github.com/Esri/calcite-components/issues
-        * If someone has already opened an issue for what you are experiencing, please add a 👍 reaction to the existing issue instead of creating a new one.
-        * For support, please check: https://developers.arcgis.com/calcite-design-system/community/
-        * Note that this issue will be closed if the required information below is missing.
+        Before submitting an issue, please [check for existing issues](https://github.com/Esri/calcite-components/issues) to avoid duplicates. 
+        If someone has already opened an issue for what you are experiencing, please add a 👍 reaction to the existing issue instead of creating a new one.
+        For support, please check the [community forum](https://developers.arcgis.com/calcite-design-system/community/).
   - type: textarea
     id: actual
     attributes:
