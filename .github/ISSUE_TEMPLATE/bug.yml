@@ -48,7 +48,6 @@ body:
     attributes:
       label: Reproduction Version
       description: The latest version that reproduces the issue.
-      value
     validations:
       required: false
   - type: textarea
