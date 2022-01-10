@@ -1,42 +1,72 @@
----
 name: Bug
-about: Report a bug in a component.
-title: "Bug: "
-labels: bug, 0 - new, needs triage
-assignees: ""
----
-
-<!--
-* Before submitting an issue, please check to see if the issue already exists: https://github.com/Esri/calcite-components/issues
-If someone has already opened an issue for what you are experiencing,
-please add a 👍 reaction to the existing issue instead of creating a new one.
-
-* For support, please check: https://developers.arcgis.com/calcite-design-system/community/
-
-* Note that this issue will be closed if the required information below is missing.
--->
-
-### Actual Behavior
-
-<!-- A clear description of the issue (optionally include before/after screenshots/GIFs) -->
-
-### Expected Behavior
-
-<!-- What you expected instead, and why -->
-
-### Reproduction Steps and Sample
-
-<!-- A codepen, codesandbox, or jsbin sample and the steps to reproduce the issue -->
-
-_Sample_:
-
-1.
-
-### Relevant Info
-
-<!--(e.g. Browser, OS, mobile, stack traces, related issues, suggestions/resources on how to fix)-->
-
-_Version_: `@esri/calcite-components@<version>`
-
-- [ ] CDN
-- [ ] NPM package
+description: Report a bug in a component
+title: ""
+labels: ["bug", "0 - new", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        * Before submitting an issue, please check to see if the issue already exists: https://github.com/Esri/calcite-components/issues
+        * If someone has already opened an issue for what you are experiencing, please add a 👍 reaction to the existing issue instead of creating a new one.
+        * For support, please check: https://developers.arcgis.com/calcite-design-system/community/
+        * Note that this issue will be closed if the required information below is missing.
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: A clear description of the issue (optionally include before/after screenshots/GIFs).
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected instead, and why?
+    validations:
+      required: true
+  - type: input
+    id: sample
+    attributes:
+      label: Reproduction Sample
+      description: |
+        A codepen, codesandbox, or jsbin sample and the steps to reproduce the issue are required. Here are template samples to help get started:
+        - https://codepen.io/pen?template=RwgrjEx
+        - https://codesandbox.io/s/calcite-template-p95kp?file=/src/App.js (React output target)
+        - https://jsbin.com/lopumatiru/edit?html,output (Set up with the ArcGIS JSAPI)
+        Alternatively, a documentation sample can be used if the issue is reproducible:
+        - https://developers.arcgis.com/calcite-design-system/components
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction Steps
+      description: Clear steps for reproducing the issue using the sample provided above.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Reproduction Version
+      description: The latest version that reproduces the issue.
+      value
+    validations:
+      required: false
+  - type: textarea
+    id: relevant
+    attributes:
+      label: Relevant Info
+      description: e.g. Browser, OS, mobile, stack traces, related issues, suggestions/resources on how to fix)
+      value: Regression? _Last working version_: `@esri/calcite-components@1.0.0-<version>`
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label:
+      description:
+      options:
+        - label: CDN
+          required: false
+        - NPM package
+          required: false
