@@ -2,6 +2,13 @@ name: Bug
 description: Report a bug in a component
 labels: ["bug", "0 - new", "needs triage"]
 body:
+ - type: markdown
+    attributes:
+      value: |
+        * Before submitting an issue, please check to see if the issue already exists: https://github.com/Esri/calcite-components/issues
+        * If someone has already opened an issue for what you are experiencing, please add a 👍 reaction to the existing issue instead of creating a new one.
+        * For support, please check: https://developers.arcgis.com/calcite-design-system/community/
+        * Note that this issue will be closed if the required information below is missing.
   - type: textarea
     id: actual
     attributes:
@@ -21,12 +28,8 @@ body:
     attributes:
       label: Reproduction Sample
       description: |
-        A codepen, codesandbox, or jsbin sample and the steps to reproduce the issue are required. Here are template samples to help get started:
-        - https://codepen.io/pen?template=RwgrjEx
-        - https://codesandbox.io/s/calcite-template-p95kp?file=/src/App.js (React output target)
-        - https://jsbin.com/lopumatiru/edit?html,output (Set up with the ArcGIS JSAPI)
-        Alternatively, a documentation sample can be used if the issue is reproducible:
-        - https://developers.arcgis.com/calcite-design-system/components
+        A [codepen](https://codepen.io/pen?template=RwgrjEx), [codesandbox](https://codesandbox.io/s/calcite-template-p95kp?file=/src/App.js), or [jsbin](https://jsbin.com/lopumatiru/edit?html,output) sample and the steps to reproduce the issue are required.
+        Alternatively, a [documentation sample](https://developers.arcgis.com/calcite-design-system/components) can be used if the issue is reproducible.
     validations:
       required: true
   - type: textarea
@@ -41,6 +44,7 @@ body:
     attributes:
       label: Reproduction Version
       description: The latest version that reproduces the issue.
+      value: "@esri/calcite-components@1.0.0-<version>"
     validations:
       required: false
   - type: textarea
