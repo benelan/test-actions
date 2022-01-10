@@ -4,6 +4,7 @@ labels: ["bug", "0 - new", "needs triage"]
 body:
   - type: markdown
     attributes:
+      label: Prerequisites
       value: |
         * Before submitting an issue, please check to see if the issue already exists: https://github.com/Esri/calcite-components/issues
         * If someone has already opened an issue for what you are experiencing, please add a 👍 reaction to the existing issue instead of creating a new one.
