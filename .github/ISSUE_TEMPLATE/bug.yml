@@ -5,9 +5,9 @@ body:
   - type: markdown
     attributes:
       value: |
-      Before submitting an issue, please [check for existing issues](https://github.com/Esri/calcite-components/issues) to avoid duplicates. 
-      If someone has already opened an issue for what you are experiencing, please add a 👍 reaction to the existing issue instead of creating a new one. 
-      For support, please check the [community forum](https://developers.arcgis.com/calcite-design-system/community/).
+        Before submitting an issue, please [check for existing issues](https://github.com/Esri/calcite-components/issues) to avoid duplicates. 
+        If someone has already opened an issue for what you are experiencing, please add a 👍 reaction to the existing issue instead of creating a new one. 
+        For support, please check the [community forum](https://developers.arcgis.com/calcite-design-system/community/).
   - type: textarea
     id: actual
     attributes:
