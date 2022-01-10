@@ -1,6 +1,5 @@
 name: Bug
 description: Report a bug in a component
-title: "Bug: "
 labels: ["bug", "0 - new", "needs triage"]
 body:
   - type: markdown
