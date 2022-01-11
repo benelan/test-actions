@@ -17,21 +17,35 @@ body:
     id: tests
     attributes:
       label: Which Tests(s)
-      description: List unstable test(s) or suite
+      description: List the unstable test(s) or suite(s).
     validations:
       required: true
   - type: textarea
     id: error
     attributes:
       label: Test error
-      description: Copy and paste the error stack trace
+      description: Copy and paste the error stack trace.
+      placeholder: |
+        FAIL src/components/calcite-foo/calcite-foo.e2e.ts (32.825 s)
+        ● calcite-foo a11y check › setFocus › can focus some button
+          expect(received).toBe(expected) // Object.is equality
+          Expected: true
+          Received: false
+            165 |   }
+            166 |
+          > 167 |   expect(await page.evaluate((selector) => document.activeElement.matches(selector), focusTargetSelector)).toBe(true);
+                |                                                                                                            ^
+            168 | }
+            169 |
+            at Object.focusable (src/tests/commonTests.ts:167:108)
+                at runMicrotasks (<anonymous>)
     validations:
       required: true
   - type: input
     id: pr
     attributes:
       label: Skipped In
-      description: PR that skipped the test
+      description: Which PR skipped the unstable test(s)?
       value: "#"
     validations:
       required: true
@@ -39,6 +53,6 @@ body:
     id: info
     attributes:
       label: Additional Info
-      description: Any info that may help fix the test
+      description: Any info that may help fix the test.
     validations:
       required: false
