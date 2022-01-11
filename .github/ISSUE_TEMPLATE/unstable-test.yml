@@ -1,0 +1,44 @@
+name: Unstable Test
+description: Associate issue for an unstable test that was skipped
+labels: ["testing", "0 - new", "p - high"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        - Please [check for existing issues](https://github.com/Esri/calcite-components/issues) to avoid duplicates. If someone has already opened an issue for what you are experiencing, please add a 👍 reaction to the existing issue instead of creating a new one. 
+        - For support, please check the [community forum](https://developers.arcgis.com/calcite-design-system/community/).
+  - type: input
+    id: component
+    attributes:
+      label: Which Component
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Which Tests(s)
+      description: List unstable test(s) or suite
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Test error
+      description: Copy and paste the error stack trace
+    validations:
+      required: true
+  - type: input
+    id: pr
+    attributes:
+      label: Skipped In
+      description: PR that skipped the test
+      value: "#"
+    validations:
+      required: true
+  - type: textarea
+    id: info
+    attributes:
+      label: Additional Info
+      description: Any info that may help fix the test
+    validations:
+      required: false
