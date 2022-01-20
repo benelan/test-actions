@@ -4,7 +4,7 @@ const {
 } = require("fs");
 const { spawn } = require("child_process");
 
-const PATH_TO_EXAMPLES_REPO = "./";
+const PATH_TO_EXAMPLES_REPO = "../../";
 
 console.log(resolve(__dirname, PATH_TO_EXAMPLES_REPO))
 
