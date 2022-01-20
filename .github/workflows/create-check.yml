@@ -1,4 +1,4 @@
-name: Screener Check
+name: Create Check
 on:
   pull_request:
     branches: [master]
@@ -6,7 +6,7 @@ on:
   push:
     branches: [master]
 jobs:
-  test:
+  screener:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -38,7 +38,7 @@ jobs:
         name: skip screener
         uses: Sibz/github-status-action@v1
         with:
-          authToken: ${{secrets.ADMIN_TOKEN}}
+          authToken: ${{secrets.GITHUB_TOKEN}}
           context: screener
           description: Skip Screener
           state:  success
@@ -47,7 +47,7 @@ jobs:
         name: run screener
         uses: Sibz/github-status-action@v1
         with:
-          authToken: ${{secrets.ADMIN_TOKEN}}
+          authToken: ${{secrets.GITHUB_TOKEN}}
           context: screener
           description: Run Screener
           state:  success
