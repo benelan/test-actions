@@ -4,8 +4,10 @@ const {
 } = require("fs");
 const { spawn } = require("child_process");
 
-const PATH_TO_EXAMPLES_REPO = "/home/runner/work/test/test/";
+// const PATH_TO_EXAMPLES_REPO = "/home/runner/work/test/test/";
 
+const PATH_TO_EXAMPLES_REPO = "../../";
+console.log(PATH_TO_EXAMPLES_REPO)
 console.log(resolve(__dirname, PATH_TO_EXAMPLES_REPO))
 
 const getDirectories = async (repo) =>
