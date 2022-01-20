@@ -15,26 +15,26 @@ jobs:
         run: |
           git fetch --deepen=100
           current_branch=$(git rev-parse --abbrev-ref HEAD)
-          echo "$current_branch"
+          echo "branch: $current_branch"
           if [ "$current_branch" == "master" ]; then
             # diff of last commit excluding md (assumes squash merge)
             screenable_changes=$(git diff --name-only @~..@ -- . ':(exclude)*.md')
-            echo "on master for pushes"
+            echo "push run"
           else
             # diff of branch excluding md
             screenable_changes=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.md')
-            echo "on branch for prs"
+            echo "pr run"
           fi
-          echo "$screenable_changes"
+          echo "changed files: $screenable_changes"
           # skip if there are only md changes
           if [ -z "$screenable_changes" ]; then
             echo "skip screener"
-            echo "::set-output name=skip::skip"
+            echo "::set-output name=skip::true"
           else
-            echo "run screener"
-            echo "::set-output name=skip::screen"
+            echo "skip screener"
+            echo "::set-output name=skip::false"
           fi
-      - if: steps.one.outputs.skip == 'skip'
+      - if: steps.one.outputs.skip == 'true'
         name: skip screener
         uses: Sibz/github-status-action@v1
         with:
@@ -43,7 +43,7 @@ jobs:
           description: Skip Screener
           state:  success
           sha: ${{github.event.pull_request.head.sha || github.sha}}
-      - if: steps.one.outputs.skip == 'screen'
+      - if: steps.one.outputs.skip == 'false'
         name: run screener
         uses: Sibz/github-status-action@v1
         with:
