@@ -15,13 +15,13 @@ jobs:
           script: |
             const { PRIMARY_CONTACT, SECONDARY_CONTACTS } = process.env
             const contacts = [...SECONDARY_CONTACTS.split(",").map(c => c.trim()), PRIMARY_CONTACT]
-            return contacts.includes(context.actor) ? "false" : "true"
+            return contacts.includes(context.actor)
       - name: merge
         uses: Goobles/gh-actions-merge-command@v1
         if: |
           github.event.issue.user.login == 'github-actions[bot]' ||
           github.event.issue.user.login == github.actor ||
-          steps.permission.outputs.result == 'true'
+          steps.permission.outputs.result
         with:
           allow_ff: false
           user_name: github-actions[bot]
