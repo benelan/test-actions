@@ -9,16 +9,16 @@ jobs:
         uses: actions/github-script@v5
         id: permission
         env:
-          PRIMARY_MAINTAINER: ${{secrets.PRIMARY_MAINTAINER}}
-          SECONDARY_MAINTAINERS: ${{secrets.SECONDARY_MAINTAINERS}}
+          PRIMARY_CONTACT: ${{secrets.PRIMARY_CONTACT}}
+          SECONDARY_CONTACTS: ${{secrets.SECONDARY_CONTACTS}}
         with:
           script: |
-            const { PRIMARY_MAINTAINER, SECONDARY_MAINTAINERS } = process.env
-            const maintainers = [...SECONDARY_MAINTAINERS.split(",").map(c => c.trim()), PRIMARY_MAINTAINER]
+            const { PRIMARY_CONTACT, SECONDARY_CONTACTS } = process.env
+            const CONTACTs = [...SECONDARY_CONTACTS.split(",").map(c => c.trim()), PRIMARY_CONTACT]
             return (
-              maintainers.includes(github.actor) ||
-              github.event.issue.user.login === github.actor ||
-              github.event.issue.user.login == 'github-actions[bot]'
+              contacts.includes(context.actor) ||
+              context.issue.user.login === context.actor ||
+              context.issue.user.login == 'github-actions[bot]'
             )
       - name: merge
         uses: Goobles/gh-actions-merge-command@v1
@@ -28,4 +28,4 @@ jobs:
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
         env:
-          GITHUB_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
