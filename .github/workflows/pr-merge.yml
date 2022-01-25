@@ -14,7 +14,7 @@ jobs:
         with:
           script: |
             const { PRIMARY_CONTACT, SECONDARY_CONTACTS } = process.env
-            const CONTACTs = [...SECONDARY_CONTACTS.split(",").map(c => c.trim()), PRIMARY_CONTACT]
+            const contacts = [...SECONDARY_CONTACTS.split(",").map(c => c.trim()), PRIMARY_CONTACT]
             return (
               contacts.includes(context.actor) ||
               context.issue.user.login === context.actor ||
