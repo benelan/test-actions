@@ -1,7 +1,7 @@
 name: Bump Examples
 on:
   schedule:
-    - cron: '0 0 0 0 0'
+    - cron: '1 1 1 1 1'
 jobs:
   bump:
     runs-on: ubuntu-latest
