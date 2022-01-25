@@ -24,7 +24,7 @@ jobs:
         if: |
           github.event.issue.user.login == 'github-actions[bot]' ||
           github.event.issue.user.login == github.actor ||
-          steps.permission.outputs.result
+          steps.permission.outputs.result == 'true'
         with:
           allow_ff: false
           user_name: github-actions[bot]
