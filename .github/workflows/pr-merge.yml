@@ -2,14 +2,27 @@ name: Auto Merge
 on: issue_comment
 jobs:
   merge:
-    if: |
-      github.event.issue.user.login == 'github-actions[bot]' ||
-      github.event.issue.user.login == github.actor
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: validate user permissions
+      - uses: actions/github-script@v5
+        id: permission
+        env:
+          PRIMARY_MAINTAINER: ${{secrets.PRIMARY_MAINTAINER}}
+          SECONDARY_MAINTAINERS: ${{secrets.SECONDARY_MAINTAINERS}}
+        with:
+          script: |
+            const { PRIMARY_MAINTAINER, SECONDARY_MAINTAINERS } = process.env
+            const maintainers = [...SECONDARY_MAINTAINERS.split(",").map(c => c.trim()), PRIMARY_MAINTAINER]
+            return (
+              maintainers.includes(github.actor) ||
+              github.event.issue.user.login === github.actor ||
+              github.event.issue.user.login == 'github-actions[bot]'
+            )
       - name: merge
         uses: Goobles/gh-actions-merge-command@v1
+        if: steps.permission.outputs.result
         with:
           allow_ff: false
           user_name: github-actions[bot]
