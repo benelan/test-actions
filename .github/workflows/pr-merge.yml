@@ -17,8 +17,8 @@ jobs:
             const contacts = [...SECONDARY_CONTACTS.split(",").map(c => c.trim()), PRIMARY_CONTACT]
             return (
               contacts.includes(context.actor) ||
-              context.issue.user.login === context.actor ||
-              context.issue.user.login == 'github-actions[bot]'
+              context.payload.issue.user.login === context.actor ||
+              context.payload.issue.user.login == 'github-actions[bot]'
             )
       - name: merge
         uses: Goobles/gh-actions-merge-command@v1
