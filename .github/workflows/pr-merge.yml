@@ -15,6 +15,9 @@ jobs:
           script: |
             const { PRIMARY_CONTACT, SECONDARY_CONTACTS } = process.env
             const contacts = [...SECONDARY_CONTACTS.split(",").map(c => c.trim()), PRIMARY_CONTACT]
+            console.log(contacts)
+            console.log(contacts.includes(context.actor))
+            console.log(contacts.includes(context.actor) ? 'true' : 'false')
             return contacts.includes(context.actor)
       - name: merge
         uses: Goobles/gh-actions-merge-command@v1
