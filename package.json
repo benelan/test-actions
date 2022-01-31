@@ -4,6 +4,7 @@
   "description": "test repo",
   "main": "index.js",
   "dependencies": {
+    "@esri/calcite-components": "^1.0.0-beta.75",
     "husky": "^7.0.4"
   },
   "devDependencies": {
