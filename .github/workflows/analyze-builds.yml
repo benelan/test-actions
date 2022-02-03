@@ -13,8 +13,9 @@ jobs:
         id: build
         run: |
           current_branch=$(git rev-parse --abbrev-ref HEAD)
+           git checkout $current_branch
           # list of all package.json files changed
-          packages_changed=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- . ':(exclude)*.md')
+          packages_changed=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- '**/package.json')
           echo "package.json files changed: $packages_changed"
           # skip if no packages are changed
           if [ -z "$packages_changed" ]; then
@@ -32,6 +33,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          current_branch=$(git rev-parse --abbrev-ref HEAD)
+          git checkout $current_branch
           git add .github/build-sizes/*.csv
           git commit -m "ci: analyze esm sample builds"
-          git push
+          git push --set-upstream origin $current_branch
