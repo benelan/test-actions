@@ -28,8 +28,7 @@ jobs:
           node-version: lts/*
       - if: steps.build.outputs.skip == 'false'
         run: node ./.github/scripts/analyze-builds.js
-      - name: submit pull request
-      - push build analysis
+      - name: push build analysis
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
