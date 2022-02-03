@@ -9,42 +9,42 @@ const exec = promisify(require("child_process").exec);
 const EXAMPLES_PATH = "../../esm-samples";
 
 const buildInfo = {
-  "jsapi-angular-cli": {
-    buildDirectory: "dist",
-    bundleDirectory: "./",
-    title: "Angular 13"
-  },
+  // "jsapi-angular-cli": {
+  //   buildDirectory: "dist",
+  //   bundleDirectory: "./",
+  //   title: "Angular 13"
+  // },
   "jsapi-create-react-app": {
     buildDirectory: "build",
     bundleDirectory: "static/js",
     title: "CRA 17.0"
   },
-  "jsapi-custom-widget": {
-    buildDirectory: "dist",
-    bundleDirectory: "assets",
-    title: "Custom Widget (Vite 2.6)"
-  },
-  "jsapi-custom-workers": {
-    buildDirectory: "dist",
-    bundleDirectory: "./",
-    title: "Custom Workers (Rollup + Webpack)"
-  },
-  "jsapi-ember-cli": {}, // Deprecated
-  "jsapi-esm-cdn": {}, // N/A
-  "jsapi-node": {
-    buildDirectory: "public",
-    title: "Node (Rollup 2.60)"
-  },
+  // "jsapi-custom-widget": {
+  //   buildDirectory: "dist",
+  //   bundleDirectory: "assets",
+  //   title: "Custom Widget (Vite 2.6)"
+  // },
+  // "jsapi-custom-workers": {
+  //   buildDirectory: "dist",
+  //   bundleDirectory: "./",
+  //   title: "Custom Workers (Rollup + Webpack)"
+  // },
+  // "jsapi-ember-cli": {}, // Deprecated
+  // "jsapi-esm-cdn": {}, // N/A
+  // "jsapi-node": {
+  //   buildDirectory: "public",
+  //   title: "Node (Rollup 2.60)"
+  // },
   "jsapi-vue-cli": {
     buildDirectory: "dist",
     bundleDirectory: "js",
     title: "Vue 3.2 (Webpack 4 - default)"
   },
-  "rollup": {
-    buildDirectory: "public",
-    bundleDirectory: "./",
-    title: "Rollup 2.60"
-  },
+  // "rollup": {
+  //   buildDirectory: "public",
+  //   bundleDirectory: "./",
+  //   title: "Rollup 2.60"
+  // },
   "webpack": {
     buildDirectory: "dist",
     bundleDirectory: "./",
@@ -66,7 +66,6 @@ const getDirectories = async (directoriesPath) =>
 
     console.log(`current version: ${version}`);
     const outputPath = resolve(__dirname, "../build-sizes", `${version}.csv`);
-    await exec(`touch ${outputPath}`)
     const stream = createWriteStream(outputPath);
     stream.write("Sample,Main bundle size,On-disk size\n");
 
@@ -101,7 +100,6 @@ const getDirectories = async (directoriesPath) =>
               .toString()
               .concat("M")
           : "N/A";
-
         const title = !!exampleTitle ? exampleTitle : example.replace(/^jsapi-/, "");
 
         stream.write(`${title},${mainBundleSize},${buildSize} (${fileCount} files)\n`);
