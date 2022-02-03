@@ -12,7 +12,7 @@ jobs:
         run: |
           current_branch=$(git rev-parse --abbrev-ref HEAD)
           # list of all package.json files changed
-          packages_changed=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) --)
+          packages_changed=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- '**/package.json')
           echo "package.json files changed: $packages_changed"
           # skip if no packages are changed
           if [ -z "$packages_changed" ]; then
