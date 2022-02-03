@@ -1,6 +1,6 @@
 name: Analyze Sample Builds
 on:
-  pull_request:
+  push:
     branches: [master]
 jobs:
   analyze:
@@ -28,14 +28,14 @@ jobs:
           node-version: lts/*
       - if: steps.build.outputs.skip == 'false'
         run: node ./.github/scripts/analyze-builds.js
-      - name: save build analysis
+      - name: push build analysis
         if: steps.build.outputs.skip == 'false'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .github/build-sizes/*.csv
           git commit -m "ci: analyze esm sample builds"
-          git push origin/master
+          git push
         # uses: peter-evans/create-pull-request@v3
         # with:
         #   base: master
