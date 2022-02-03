@@ -1,6 +1,6 @@
 name: Analyze Sample Builds
 on:
-  pull_request:
+  push:
     branches: [master]
 jobs:
   analyze:
