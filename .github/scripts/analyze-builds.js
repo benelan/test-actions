@@ -65,8 +65,9 @@ const getDirectories = async (directoriesPath) =>
     const version = JSON.parse(await readFile(packageFile, "utf8")).dependencies["@arcgis/core"].replace(/\^|\~/, "");
 
     console.log(`current version: ${version}`);
-    const outputPath = resolve(__dirname, "../build-sizes");
-    const stream = createWriteStream(`${outputPath}/${version}.csv`);
+    const outputPath = resolve(__dirname, "../build-sizes", `${version}.csv`);
+    await exec(`touch ${outputPath}`)
+    const stream = createWriteStream(outputPath);
     stream.write("Sample,Main bundle size,On-disk size\n");
 
     for (example of exampleDirs) {
