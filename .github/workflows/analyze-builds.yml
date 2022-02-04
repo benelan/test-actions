@@ -10,11 +10,11 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
+      - run: echo "${{ github.event.pull_request.head.ref }}""
+      - run: echo "$(git rev-parse --abbrev-ref HEAD)"
+      - run: echo "${{ github.head_ref }}"
       - name: check for package changes
         id: build
-        run: echo "${{ github.event.pull_request.head.ref }}""
-        run: echo "$(git rev-parse --abbrev-ref HEAD)"
-        run: echo "${{ github.head_ref }}"
         run: |
           current_branch=$(git rev-parse --abbrev-ref HEAD)
           # list of all package.json files changed
