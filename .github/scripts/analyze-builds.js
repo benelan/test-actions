@@ -13,7 +13,7 @@ const SAMPLES_INFO = {
   //   name: "Angular",
   //   package: "@angular/core",
   //   buildDirectory: "dist",
-  //   bundleDirectory: "./"
+  //   bundleDirectory: "./",
   // },
   "jsapi-create-react-app": {
     name: "CRA",
@@ -27,12 +27,12 @@ const SAMPLES_INFO = {
     buildDirectory: "dist",
     bundleDirectory: "js",
   },
-  // "rollup": {
+  // rollup: {
   //   name: "Rollup",
   //   package: "rollup",
   //   devDep: true,
   //   buildDirectory: "public",
-  //   bundleDirectory: "./"
+  //   bundleDirectory: "./",
   // },
   webpack: {
     name: "Webpack",
@@ -57,9 +57,11 @@ const getDirectories = async (directoriesPath) =>
         resolve(__dirname, SAMPLES_PATH, sampleDirs[0], "package.json"),
         "utf8"
       )
-    ).dependencies["@arcgis/core"].replace(/\^|\~/, "");
+    )
+      .dependencies["@arcgis/core"].replace(/\^|\~/, "") // semver range
+      .replace(/\.\d*/, ""); // semver patch
 
-    console.log(`JSAPI version: ${jsapiVersion}`);
+    console.log(`ArcGIS JSAPI:  v${jsapiVersion}`);
     const outputPath = resolve(
       __dirname,
       "../build-sizes",
@@ -72,22 +74,24 @@ const getDirectories = async (directoriesPath) =>
       const buildDir = SAMPLES_INFO[sample]?.buildDirectory;
       const bundleDir = SAMPLES_INFO[sample]?.bundleDirectory;
       const sampleName = SAMPLES_INFO[sample]?.name;
-      const samplePackage = SAMPLES_INFO[sample]?.package;
-      const isPackageDevDep = SAMPLES_INFO[sample]?.devDep;
+      const packageName = SAMPLES_INFO[sample]?.package;
+      const isDevDep = SAMPLES_INFO[sample]?.devDep;
 
       if (!!buildDir) {
         const samplePath = resolve(SAMPLES_PATH, sample);
         const buildPath = resolve(samplePath, buildDir);
 
-        const samplePackageFile = JSON.parse(
+        const packageFile = JSON.parse(
           await readFile(resolve(samplePath, "package.json"), "utf8")
         );
 
         const packageVersion = (
-          !!isPackageDevDep
-            ? samplePackageFile.devDependencies[samplePackage]
-            : samplePackageFile.dependencies[samplePackage]
-        ).replace(/\^|\~/, "");
+          !!isDevDep
+            ? packageFile.devDependencies[packageName]
+            : packageFile.dependencies[packageName]
+        )
+          .replace(/\^|\~/, "")
+          .replace(/\.\d*/, "");
 
         console.log(`${sampleName}: installing deps`);
         await exec(`npm i --prefix ${samplePath}`);
@@ -108,7 +112,7 @@ const getDirectories = async (directoriesPath) =>
               `find ${resolve(
                 buildPath,
                 bundleDir
-              )} -name '*.js' -type f -printf '%s\t%p\n' | sort -nr | head -1 | cut -f1`
+              )} -name '*.js' -type f -printf "%s\t%p\n" | sort -nr | head -1 | cut -f1`
             )
           ).stdout.trim() / 1e6 // convert bytes to megabytes
         )
