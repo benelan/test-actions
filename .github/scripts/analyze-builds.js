@@ -62,7 +62,7 @@ const getDirectories = async (directoriesPath) =>
     console.log(`ArcGIS JSAPI:  v${jsapiVersion}`);
     const outputPath = resolve(
       __dirname,
-      "../build-sizes",
+      "../build-metrics",
       `${jsapiVersion}.csv`
     );
     const stream = createWriteStream(outputPath);
