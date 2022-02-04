@@ -18,8 +18,8 @@ const buildInfo = {
   "jsapi-create-react-app": {
     buildDirectory: "build",
     bundleDirectory: "static/js",
-    title: "React",
-    package: "react"
+    title: "CRA",
+    package: "react-scripts"
   },
   "jsapi-vue-cli": {
     buildDirectory: "dist",
@@ -52,11 +52,9 @@ const getDirectories = async (directoriesPath) =>
   try {
     const exampleDirs = await getDirectories(EXAMPLES_PATH);
 
-    const packageFile = resolve(__dirname, EXAMPLES_PATH, exampleDirs[0], "package.json");
-    const jsapiVersion = JSON.parse(await readFile(packageFile, "utf8")).dependencies["@arcgis/core"].replace(
-      /\^|\~/,
-      ""
-    );
+    const jsapiVersion = JSON.parse(
+      await readFile(resolve(__dirname, EXAMPLES_PATH, exampleDirs[0], "package.json"), "utf8")
+    ).dependencies["@arcgis/core"].replace(/\^|\~/, "");
 
     console.log(`current version: ${jsapiVersion}`);
     const outputPath = resolve(__dirname, "../build-sizes", `${jsapiVersion}.csv`);
@@ -91,23 +89,17 @@ const getDirectories = async (directoriesPath) =>
         console.log(`${example}: calculating size`);
         const buildSize = (await exec(`du -sh ${buildPath} | cut -f1`)).stdout.trim();
         const fileCount = (await exec(`find ${buildPath} -type f | wc -l`)).stdout.trim();
-        const mainBundleSize = !!bundleDir
-          ? Number(
-              (
-                await exec(
-                  // largest js bundle file
-                  `du -a --exclude="*.map" ${resolve(buildPath, bundleDir)}/ | sort -n -r | sed -n 2p | cut -f1`
-                )
-              ).stdout.trim() / 1000 // convert kb to mb
-            )
-              .toFixed(1)
-              .toString()
-              .concat("M")
-          : "N/A";
-        const title = !!exampleTitle ? exampleTitle : example.replace(/^jsapi-/, "");
+        const mainBundleSize = Number(
+          (
+            await exec(`du -a --exclude="*.map" ${resolve(buildPath, bundleDir)}/ | sort -n -r | sed -n 2p | cut -f1`)
+          ).stdout.trim() / 1000 // convert kb to mb
+        )
+          .toFixed(1)
+          .toString()
+          .concat("M");
 
         stream.write(
-          `${title} ${packageVersion.replace(/\^|\~/, "")},${mainBundleSize},${buildSize} (${fileCount} files)\n`
+          `${exampleTitle} ${packageVersion.replace(/\^|\~/, "")},${mainBundleSize},${buildSize} (${fileCount} files)\n`
         );
       }
     }
