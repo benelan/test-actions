@@ -12,8 +12,10 @@ jobs:
       - name: check for package changes
         id: build
         run: |
+        git diff --name-only $(git rev-list -n1 --min-age="$(git log -1 --format="%at")")
+
           # list of all package.json files changed
-          packages_changed=$(git diff --name-only HEAD^ HEAD -- '**/package.json')
+          packages_changed=$(git diff  HEAD^ HEAD -- '**/package.json')
           echo "package.json files changed: $packages_changed"
           # skip if no packages are changed
           if [ -z "$packages_changed" ]; then

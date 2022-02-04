@@ -12,44 +12,35 @@ const buildInfo = {
   // "jsapi-angular-cli": {
   //   buildDirectory: "dist",
   //   bundleDirectory: "./",
-  //   title: "Angular 13"
+  //   title: "Angular",
+  //   package: "@angular/core"
   // },
   "jsapi-create-react-app": {
     buildDirectory: "build",
     bundleDirectory: "static/js",
-    title: "CRA 17.0"
+    title: "React",
+    package: "react"
   },
-  // "jsapi-custom-widget": {
-  //   buildDirectory: "dist",
-  //   bundleDirectory: "assets",
-  //   title: "Custom Widget (Vite 2.6)"
-  // },
-  // "jsapi-custom-workers": {
-  //   buildDirectory: "dist",
-  //   bundleDirectory: "./",
-  //   title: "Custom Workers (Rollup + Webpack)"
-  // },
-  // "jsapi-ember-cli": {}, // Deprecated
-  // "jsapi-esm-cdn": {}, // N/A
-  // "jsapi-node": {
-  //   buildDirectory: "public",
-  //   title: "Node (Rollup 2.60)"
-  // },
-  // "jsapi-vue-cli": {
-  //   buildDirectory: "dist",
-  //   bundleDirectory: "js",
-  //   title: "Vue 3.2 (Webpack 4 - default)"
-  // },
+  "jsapi-vue-cli": {
+    buildDirectory: "dist",
+    bundleDirectory: "js",
+    title: "Vue",
+    package: "vue"
+  },
   // "rollup": {
   //   buildDirectory: "public",
   //   bundleDirectory: "./",
-  //   title: "Rollup 2.60"
+  //   title: "Rollup",
+  //   package: "rollup",
+  //   devDep: true
   // },
-  // "webpack": {
-  //   buildDirectory: "dist",
-  //   bundleDirectory: "./",
-  //   title: "Webpack 5.64"
-  // }
+  "webpack": {
+    buildDirectory: "dist",
+    bundleDirectory: "./",
+    title: "Webpack",
+    package: "webpack",
+    devDep: true
+  }
 };
 
 const getDirectories = async (directoriesPath) =>
@@ -62,10 +53,13 @@ const getDirectories = async (directoriesPath) =>
     const exampleDirs = await getDirectories(EXAMPLES_PATH);
 
     const packageFile = resolve(__dirname, EXAMPLES_PATH, exampleDirs[0], "package.json");
-    const version = JSON.parse(await readFile(packageFile, "utf8")).dependencies["@arcgis/core"].replace(/\^|\~/, "");
+    const jsapiVersion = JSON.parse(await readFile(packageFile, "utf8")).dependencies["@arcgis/core"].replace(
+      /\^|\~/,
+      ""
+    );
 
-    console.log(`current version: ${version}`);
-    const outputPath = resolve(__dirname, "../build-sizes", `${version}.csv`);
+    console.log(`current version: ${jsapiVersion}`);
+    const outputPath = resolve(__dirname, "../build-sizes", `${jsapiVersion}.csv`);
     const stream = createWriteStream(outputPath);
     stream.write("Sample,Main bundle size,On-disk size\n");
 
@@ -73,6 +67,16 @@ const getDirectories = async (directoriesPath) =>
       const buildDir = buildInfo[example]?.buildDirectory;
       const bundleDir = buildInfo[example]?.bundleDirectory;
       const exampleTitle = buildInfo[example]?.title;
+      const examplePackage = buildInfo[example]?.package;
+      const isPackageDevDep = buildInfo[example]?.devDep;
+
+      const examplePackageFile = JSON.parse(
+        await readFile(resolve(__dirname, EXAMPLES_PATH, example, "package.json"), "utf8")
+      );
+
+      const packageVersion = isPackageDevDep
+        ? examplePackageFile.devDependencies[examplePackage]
+        : examplePackageFile.dependencies[examplePackage];
 
       if (!!buildDir) {
         const examplePath = resolve(__dirname, EXAMPLES_PATH, example);
@@ -102,7 +106,9 @@ const getDirectories = async (directoriesPath) =>
           : "N/A";
         const title = !!exampleTitle ? exampleTitle : example.replace(/^jsapi-/, "");
 
-        stream.write(`${title},${mainBundleSize},${buildSize} (${fileCount} files)\n`);
+        stream.write(
+          `${title} ${packageVersion.replace(/\^|\~/, "")},${mainBundleSize},${buildSize} (${fileCount} files)\n`
+        );
       }
     }
   } catch (err) {
