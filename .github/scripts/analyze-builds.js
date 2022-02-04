@@ -35,21 +35,21 @@ const buildInfo = {
   //   buildDirectory: "public",
   //   title: "Node (Rollup 2.60)"
   // },
-  "jsapi-vue-cli": {
-    buildDirectory: "dist",
-    bundleDirectory: "js",
-    title: "Vue 3.2 (Webpack 4 - default)"
-  },
+  // "jsapi-vue-cli": {
+  //   buildDirectory: "dist",
+  //   bundleDirectory: "js",
+  //   title: "Vue 3.2 (Webpack 4 - default)"
+  // },
   // "rollup": {
   //   buildDirectory: "public",
   //   bundleDirectory: "./",
   //   title: "Rollup 2.60"
   // },
-  "webpack": {
-    buildDirectory: "dist",
-    bundleDirectory: "./",
-    title: "Webpack 5.64"
-  }
+  // "webpack": {
+  //   buildDirectory: "dist",
+  //   bundleDirectory: "./",
+  //   title: "Webpack 5.64"
+  // }
 };
 
 const getDirectories = async (directoriesPath) =>
