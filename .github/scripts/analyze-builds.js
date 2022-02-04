@@ -57,9 +57,7 @@ const getDirectories = async (directoriesPath) =>
         resolve(__dirname, SAMPLES_PATH, sampleDirs[0], "package.json"),
         "utf8"
       )
-    )
-      .dependencies["@arcgis/core"].replace(/\^|\~/, "") // semver range
-      .replace(/\.\d*/, ""); // semver patch
+    ).dependencies["@arcgis/core"].replace(/\^|\~/, ""); // remove semver range
 
     console.log(`ArcGIS JSAPI:  v${jsapiVersion}`);
     const outputPath = resolve(
@@ -78,6 +76,7 @@ const getDirectories = async (directoriesPath) =>
       const isDevDep = SAMPLES_INFO[sample]?.devDep;
 
       if (!!buildDir) {
+        throw new Error("test")
         const samplePath = resolve(SAMPLES_PATH, sample);
         const buildPath = resolve(samplePath, buildDir);
 
@@ -89,9 +88,7 @@ const getDirectories = async (directoriesPath) =>
           !!isDevDep
             ? packageFile.devDependencies[packageName]
             : packageFile.dependencies[packageName]
-        )
-          .replace(/\^|\~/, "")
-          .replace(/\.\d*/, "");
+        ).replace(/\^|\~/, "");
 
         console.log(`${sampleName}: installing deps`);
         await exec(`npm i --prefix ${samplePath}`);
