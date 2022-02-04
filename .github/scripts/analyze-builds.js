@@ -21,12 +21,12 @@ const SAMPLES_INFO = {
     buildDirectory: "build",
     bundleDirectory: "static/js",
   },
-  "jsapi-vue-cli": {
-    name: "Vue",
-    package: "vue",
-    buildDirectory: "dist",
-    bundleDirectory: "js",
-  },
+  // "jsapi-vue-cli": {
+  //   name: "Vue",
+  //   package: "vue",
+  //   buildDirectory: "dist",
+  //   bundleDirectory: "js",
+  // },
   // rollup: {
   //   name: "Rollup",
   //   package: "rollup",
@@ -34,13 +34,13 @@ const SAMPLES_INFO = {
   //   buildDirectory: "public",
   //   bundleDirectory: "./",
   // },
-  webpack: {
-    name: "Webpack",
-    package: "webpack",
-    devDep: true,
-    buildDirectory: "dist",
-    bundleDirectory: "./",
-  },
+  // webpack: {
+  //   name: "Webpack",
+  //   package: "webpack",
+  //   devDep: true,
+  //   buildDirectory: "dist",
+  //   bundleDirectory: "./",
+  // },
 };
 
 const getDirectories = async (directoriesPath) =>
@@ -62,7 +62,7 @@ const getDirectories = async (directoriesPath) =>
     console.log(`ArcGIS JSAPI:  v${jsapiVersion}`);
     const outputPath = resolve(
       __dirname,
-      "../build-sizes",
+      "../build-metrics",
       `${jsapiVersion}.csv`
     );
     const stream = createWriteStream(outputPath);
@@ -76,7 +76,6 @@ const getDirectories = async (directoriesPath) =>
       const isDevDep = SAMPLES_INFO[sample]?.devDep;
 
       if (!!buildDir) {
-        throw new Error("test")
         const samplePath = resolve(SAMPLES_PATH, sample);
         const buildPath = resolve(samplePath, buildDir);
 
