@@ -10,9 +10,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
-      - run: echo "${{ github.event.pull_request.head.ref }}""
-      - run: echo "$(git rev-parse --abbrev-ref HEAD)"
-      - run: echo "${{ github.head_ref }}"
       - name: check for package changes
         id: build
         run: |
@@ -39,4 +36,4 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .github/build-sizes/*.csv
           git commit -m "ci: analyze esm sample builds"
-          git push origin ${{ github.head_ref }}
+          git push origin ${{ github.event.pull_request.head.ref }}
