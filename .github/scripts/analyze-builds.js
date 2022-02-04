@@ -78,6 +78,7 @@ const getDirectories = async (directoriesPath) =>
       const isDevDep = SAMPLES_INFO[sample]?.devDep;
 
       if (!!buildDir) {
+        throw new Error("test");
         const samplePath = resolve(SAMPLES_PATH, sample);
         const buildPath = resolve(samplePath, buildDir);
 
