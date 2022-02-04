@@ -1,0 +1,4 @@
+Sample,Main bundle size,On-disk size
+CRA 4.0.3,1.7M,40M (394 files)
+Vue 3.2.23,1.7M,37M (363 files)
+Webpack 5.64.1,6.6M,8.1M (196 files)
