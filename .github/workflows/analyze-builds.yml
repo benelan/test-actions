@@ -1,4 +1,4 @@
-name: ESM Sample Build Metrics
+name: ESM Sample Metrics
 on:
   pull_request:
     branches: [master]
@@ -11,32 +11,34 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.ADMIN_TOKEN }}
-      - name: check for package changes
+      - name: check if samples should build
         id: build
         run: |
           current_branch=$(git rev-parse --abbrev-ref HEAD)
           # package.json files changed in the branch
-          packages_changed=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- '**/package.json')
+          packages_changed=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- "**/package.json")
           # metric files changed in the previous commit
-          csv_changed=$(git diff --name-only HEAD^ HEAD -- './esm-samples/.metrics/*.csv')
+          metrics_changed=$(git diff --name-only HEAD^ HEAD -- "./esm-samples/.metrics/*.csv")
           if [ -z "$packages_changed" ]; then
             echo "no package.json files changed, skipping build analysis"
-          elif [ -n "$csv_changed" ]; then
-            echo "metric files changed: $csv_changed"
+          elif [ -n "$metrics_changed" ]; then
+            echo "metric files changed: $metrics_changed"
             echo "the previous commit contained build metrics, skipping build analysis"
           else
             echo "package.json files changed: $packages_changed"
             echo "analyzing builds"
             echo "::set-output name=skip::false"
           fi
-      - if: steps.build.outputs.skip == 'false'
+      - if: steps.build.outputs.skip == "false"
+        name: setup node
         uses: actions/setup-node@v2
         with:
           node-version: lts/*
-      - if: steps.build.outputs.skip == 'false'
+      - if: steps.build.outputs.skip == "false"
+        name: run sample metrics script
         run: node ./.github/scripts/analyze-builds.js
-      - name: push build analysis
-        if: steps.build.outputs.skip == 'false'
+      - name: push sample metrics analysis
+        if: steps.build.outputs.skip == "false"
         run: |
           git pull
           git config --global user.name "github-actions[bot]"
