@@ -50,7 +50,6 @@ const getDirectories = async (directoriesPath) =>
 
 (async () => {
   try {
-    const start = new Date();
     const sampleDirs = await getDirectories(SAMPLES_PATH);
 
     const jsapiVersion = JSON.parse(
@@ -63,11 +62,13 @@ const getDirectories = async (directoriesPath) =>
     console.log(`ArcGIS JSAPI:  v${jsapiVersion}`);
     const outputPath = resolve(
       __dirname,
-      "../build-metrics",
+      "../../esm-samples/.metrics",
       `${jsapiVersion}.csv`
     );
     const stream = createWriteStream(outputPath);
-    stream.write("Sample,Main bundle size,On-disk size\n");
+    stream.write(
+      "Sample,Main bundle size (MB),On-disk size (MB),On-disk files\n"
+    );
 
     console.log("Installing dependencies and building samples");
     await Promise.all(
@@ -105,9 +106,9 @@ const getDirectories = async (directoriesPath) =>
         ).replace(/\^|\~/, "");
 
         console.log(`${sampleName}: calculating size`);
-        const buildSize = (
-          await exec(`du -sh ${buildPath} | cut -f1`)
-        ).stdout.trim();
+        const buildSize = (await exec(`du -sh ${buildPath} | cut -f1`)).stdout
+          .trim()
+          .replace(/[a-z]/i, "");
         const fileCount = (
           await exec(`find ${buildPath} -type f | wc -l`)
         ).stdout.trim();
@@ -122,15 +123,12 @@ const getDirectories = async (directoriesPath) =>
           ).stdout.trim() / 1e6 // convert bytes to megabytes
         )
           .toFixed(1)
-          .toString()
-          .concat("M");
+          .toString();
 
         stream.write(
-          `${sampleName} ${packageVersion},${mainBundleSize},${buildSize} (${fileCount} files)\n`
+          `${sampleName} ${packageVersion},${mainBundleSize},${buildSize},${fileCount}\n`
         );
       }
-      const end = new Date() - start;
-      console.log(`Execution time: ${(end / 60000).toFixed(2)} minutes`);
     }
   } catch (err) {
     console.error(err);
