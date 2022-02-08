@@ -21,7 +21,7 @@ jobs:
           csv_changed=$(git diff --name-only HEAD^ HEAD -- './esm-samples/.metrics/*.csv')
           if [ -z "$packages_changed" ]; then
             echo "no package.json files changed, skipping build analysis"
-          elif ![ -z "$csv_changed" ]; then
+          elif [ -n "$csv_changed" ]; then
             echo "metric files changed: $csv_changed"
             echo "the previous commit contained build metrics, skipping build analysis"
           else
