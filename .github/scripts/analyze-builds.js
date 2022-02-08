@@ -21,12 +21,12 @@ const SAMPLES_INFO = {
     buildDirectory: "build",
     bundleDirectory: "static/js",
   },
-  // "jsapi-vue-cli": {
-  //   name: "Vue",
-  //   package: "vue",
-  //   buildDirectory: "dist",
-  //   bundleDirectory: "js",
-  // },
+  "jsapi-vue-cli": {
+    name: "Vue",
+    package: "vue",
+    buildDirectory: "dist",
+    bundleDirectory: "js",
+  },
   // rollup: {
   //   name: "Rollup",
   //   package: "rollup",
@@ -34,13 +34,13 @@ const SAMPLES_INFO = {
   //   buildDirectory: "public",
   //   bundleDirectory: "./",
   // },
-  // webpack: {
-  //   name: "Webpack",
-  //   package: "webpack",
-  //   devDep: true,
-  //   buildDirectory: "dist",
-  //   bundleDirectory: "./",
-  // },
+  webpack: {
+    name: "Webpack",
+    package: "webpack",
+    devDep: true,
+    buildDirectory: "dist",
+    bundleDirectory: "./",
+  },
 };
 
 const getDirectories = async (directoriesPath) =>
@@ -62,11 +62,27 @@ const getDirectories = async (directoriesPath) =>
     console.log(`ArcGIS JSAPI:  v${jsapiVersion}`);
     const outputPath = resolve(
       __dirname,
-      "../build-metrics",
+      "../../esm-samples/.metrics",
       `${jsapiVersion}.csv`
     );
     const stream = createWriteStream(outputPath);
-    stream.write("Sample,Main bundle size,On-disk size\n");
+    stream.write(
+      "Sample,Main bundle size (MB),On-disk size (MB),On-disk files\n"
+    );
+
+    console.log("Installing dependencies and building samples");
+    await Promise.all(
+      sampleDirs.map((sample) =>
+        !!SAMPLES_INFO[sample]?.name
+          ? exec(
+              `npm i --prefix ${resolve(
+                SAMPLES_PATH,
+                sample
+              )} && npm run build --prefix ${resolve(SAMPLES_PATH, sample)}`
+            )
+          : null
+      )
+    );
 
     for (sample of sampleDirs) {
       const buildDir = SAMPLES_INFO[sample]?.buildDirectory;
@@ -89,16 +105,10 @@ const getDirectories = async (directoriesPath) =>
             : packageFile.dependencies[packageName]
         ).replace(/\^|\~/, "");
 
-        console.log(`${sampleName}: installing deps`);
-        await exec(`npm i --prefix ${samplePath}`);
-
-        console.log(`${sampleName}: building`);
-        await exec(`npm run build --prefix ${samplePath}`);
-
         console.log(`${sampleName}: calculating size`);
-        const buildSize = (
-          await exec(`du -sh ${buildPath} | cut -f1`)
-        ).stdout.trim();
+        const buildSize = (await exec(`du -sh ${buildPath} | cut -f1`)).stdout
+          .trim()
+          .replace(/[a-z]/i, "");
         const fileCount = (
           await exec(`find ${buildPath} -type f | wc -l`)
         ).stdout.trim();
@@ -113,11 +123,10 @@ const getDirectories = async (directoriesPath) =>
           ).stdout.trim() / 1e6 // convert bytes to megabytes
         )
           .toFixed(1)
-          .toString()
-          .concat("M");
+          .toString();
 
         stream.write(
-          `${sampleName} ${packageVersion},${mainBundleSize},${buildSize} (${fileCount} files)\n`
+          `${sampleName} ${packageVersion},${mainBundleSize},${buildSize},${fileCount}\n`
         );
       }
     }
