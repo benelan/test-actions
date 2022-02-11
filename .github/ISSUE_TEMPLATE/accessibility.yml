@@ -41,8 +41,8 @@ body:
       label: Reproduction Steps
       description: Clear, numbered steps for reproducing the issue using the sample provided above.
       placeholder: |
-        1. Open the developer tools console
-        2. Click on xyz
+        1. Open the DevTools console
+        2. Click on XYZ
         3. ...
     validations:
       required: true
@@ -66,6 +66,14 @@ body:
     attributes:
       label: Relevant Info
       description: Browser, OS, mobile, stack traces, related issues, suggestions/resources on how to fix, etc.
+      placeholder: |
+        Environment:
+        - Windows 10
+        - Node v16.13.0
+        - NPM v8.1.2
+
+        Error: `TypeError: Cannot Read Property of Undefined`
+        ...
     validations:
       required: false
   - type: input
