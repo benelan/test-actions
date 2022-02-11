@@ -65,11 +65,10 @@ body:
       description: Browser, OS, mobile, stack traces, related issues, suggestions/resources on how to fix, etc.
     validations:
       required: false
-  - type: checkboxes
+  - type: input
     id: regression
     attributes:
       label: Regression?
       description: Please provide the last working version in the Relevant Info section if the issue is a regression.
-      options:
-        - label: "Yes"
-          required: false
+    validations:
+      required: false
