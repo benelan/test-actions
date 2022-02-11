@@ -71,5 +71,5 @@ body:
       label: Regression?
       description: Please provide the last working version in the Relevant Info section if the issue is a regression.
       options:
-        - label: Yes
+        - label: "Yes"
           required: false
