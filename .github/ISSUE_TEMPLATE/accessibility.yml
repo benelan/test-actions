@@ -1,18 +1,12 @@
-name: Accessibility
-description: Report an accessibility issue in a component
-labels: ["a11y", "bug", "0 - new", "p - high", "needs triage"]
+name: Bug
+description: Report a bug in a component
+labels: ["bug", "0 - new", "needs triage"]
 body:
   - type: markdown
     attributes:
       value: |
         - Please [check for existing issues](https://github.com/Esri/calcite-components/issues) to avoid duplicates. If someone has already opened an issue for what you are experiencing, please add a 👍 reaction to the existing issue instead of creating a new one.
-        - For support, please check the [community forum](https://developers.arcgis.com/calcite-design-system/community/)
-  - type: textarea
-    id: summary
-    attributes:
-      label: Summary
-    validations:
-      required: false
+        - For support, please check the [community forum](https://developers.arcgis.com/calcite-design-system/community/).
   - type: textarea
     id: actual
     attributes:
@@ -54,25 +48,14 @@ body:
       placeholder: beta.2
     validations:
       required: true
-  - type: input
-    id: w3c
-    attributes:
-      label: Working W3C Example/Tutorial
-      description: Link to valid w3c example for reference.
-    validations:
-      required: false
   - type: textarea
     id: relevant
     attributes:
       label: Relevant Info
       description: Browser, OS, mobile, stack traces, related issues, suggestions/resources on how to fix, etc.
       placeholder: |
-        Environment:
-        - Windows 10
-        - Node v16.13.0
-        - NPM v8.1.2
-
-        Error: `TypeError: Cannot Read Property of Undefined`
+        Windows 10, Chrome 97
+        `Uncaught TypeError: Cannot read property of undefined`
         ...
     validations:
       required: false
