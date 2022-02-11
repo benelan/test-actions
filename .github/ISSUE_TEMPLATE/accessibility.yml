@@ -40,7 +40,10 @@ body:
     attributes:
       label: Reproduction Steps
       description: Clear, numbered steps for reproducing the issue using the sample provided above.
-      value: "1. "
+      placeholder: |
+      1. Open the developer tools console
+      2. Click on xyz
+      3. ...
     validations:
       required: true
   - type: input
