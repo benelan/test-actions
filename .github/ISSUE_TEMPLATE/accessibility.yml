@@ -69,6 +69,6 @@ body:
     id: regression
     attributes:
       label: Regression?
-      description: Please provide the last working version in the Relevant Info section if the issue is a regression.
+      description: Please provide the last working version if the issue is a regression.
     validations:
       required: false
