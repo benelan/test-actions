@@ -11,8 +11,8 @@ jobs:
           ISSUE_VERIFIERS: ${{secrets.ISSUE_VERIFIERS}}
         with:
           script: |
-            const labelName = context.payload?.label.name;
-            if (labelName === "3 - installed") {
+            const { label } = context.payload;
+            if (label && label.name === "3 - installed") {
               const assignees = process.env.ISSUE_VERIFIERS.split(",").map(v => v.trim());
               await github.issues.update({
                 issue_number: context.issue.number,
