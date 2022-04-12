@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: lts/*
       - if: steps.build.outputs.skip == 'false'
-        name: install dependencies for sample metrics script
+        name: install dependencies for sample metrics scripts
         run: | 
           cd ./.github/scripts/
           npm ci
