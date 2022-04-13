@@ -1,6 +1,7 @@
 name: ESM Sample Metrics
 on:
   pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
     branches: [master]
 jobs:
   analyze:
@@ -11,7 +12,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.ADMIN_TOKEN }}
-      - name: check if samples should build
+      - name: should samples build
         id: build
         run: |
           current_branch=$(git rev-parse --abbrev-ref HEAD)
@@ -34,6 +35,11 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: lts/*
+      - if: steps.build.outputs.skip == 'false'
+        name: install dependencies for sample metrics scripts
+        run: | 
+          cd ./.github/scripts/
+          npm ci
       - if: steps.build.outputs.skip == 'false'
         name: run sample metrics script
         run: node ./.github/scripts/analyze-builds.js
