@@ -4,12 +4,12 @@
   "description": "test repo for testing",
   "main": "index.js",
   "dependencies": {
-    "husky": "^7.0.4"
+    "husky": "^8.0.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
-    "husky": "^7.0.4",
+    "husky": "^8.0.1",
     "pify": "5.0.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.2"
