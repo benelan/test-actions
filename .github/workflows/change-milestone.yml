@@ -1,0 +1,81 @@
+# This action only retrieves up to 100 issues per issue lifecycle label due to the per_page max.
+# This is not a problem for our 2 week sprints, but if we change it to monthly
+# we need to iterate through response issue list pages using the `page` property
+# https://octokit.github.io/rest.js/v18#issues-list-for-repo
+name: Change Milestone
+on:
+  issues:
+    types: [labeled]
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v4
+        with:
+          script: |
+            const { data: milestones } = await github.issues.listMilestones({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              sort: "due_on",
+              per_page: 100,
+              direction: "asc",
+            });
+
+            if (!milestones.length) {
+              console.log("There are no open milestones in this repo, ending run.");
+              return;
+            }
+
+            const currentDate = new Date(Date.now());
+            for (const [index, milestone] of milestones.entries()) {
+              if (
+                milestone.due_on &&
+                new Date(milestone.due_on) > currentDate &&
+                index > 0
+              ) {
+                const previousMilestoneIssuesNew = await github.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: "open",
+                  milestone: milestones[index - 1].number,
+                  per_page: 100,
+                  labels: "0 - new",
+                });
+
+                const previousMilestoneIssuesAssigned = await github.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: "open",
+                  milestone: milestones[index - 1].number,
+                  per_page: 100,
+                  labels: "1 - assigned",
+                });
+
+                const previousMilestoneIssuesInDev = await github.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: "open",
+                  milestone: milestones[index - 1].number,
+                  per_page: 100,
+                  labels: "2 - in development",
+                });
+
+                const moveableIssues = [
+                  ...previousMilestoneIssuesNew,
+                  ...previousMilestoneIssuesAssigned,
+                  ...previousMilestoneIssuesInDev,
+                ];
+
+                for (const issue of moveableIssues) {
+                  await octokit.rest.issues.update({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    milestone: milestone.number,
+                  });
+                }
+
+                return;
+              }
+            }
