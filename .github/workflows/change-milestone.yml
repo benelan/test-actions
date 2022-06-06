@@ -82,11 +82,11 @@ jobs:
               }
 
               for (const issue of moveableIssues) {
-              console.log(JSON.stringify(issue.labels)
-              const labels =  issue.labels
-                    .map((label) => label.name)
-                    .push("milestone adjusted")
-                console.log(JSON.stringify(issue.labels)
+                console.log(JSON.stringify(issue.labels))
+                const labels =  issue.labels
+                  .map((label) => label.name)
+                  .push("milestone adjusted")
+                console.log(JSON.stringify(labels))
                 await github.issues.update({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
