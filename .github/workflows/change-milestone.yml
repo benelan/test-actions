@@ -89,9 +89,7 @@ jobs:
                   milestone: milestone.number,
                   labels: issue.labels
                     .map((label) => label.name)
-                    .filter(name => name !== "milestone adjusted")
-                    .join(",")
-                    .concat(",milestone adjusted"),
+                    .push("milestone adjusted")
                 });
               }
 
