@@ -1,11 +1,12 @@
-# This action only retrieves up to 100 issues per issue lifecycle label due to the per_page max.
-# This is not a problem for our 2 week sprints, but if we change it to monthly
-# we need to iterate through response issue list pages using the `page` property
+# Action that moves open, non-installed issues from the previous, past-due milestone to the current one
+# This action only retrieves up to 100 issues per issue lifecycle label because of the per_page max.
+# The max page count is not a problem for our 2 week sprints, but if we change to monthly
+# we need to iterate through issue list pages using the `page` .
 # https://octokit.github.io/rest.js/v18#issues-list-for-repo
 name: Change Milestone
 on:
-  issues:
-    types: [labeled]
+  schedule:
+    - cron: '0 9 * * 1'
 jobs:
   change:
     runs-on: ubuntu-latest
@@ -29,22 +30,27 @@ jobs:
 
             const currentDate = new Date(Date.now());
             for (const [index, milestone] of milestones.entries()) {
-              if (
-                milestone.due_on &&
-                new Date(milestone.due_on) > currentDate &&
-                index > 0
-              ) {
+              if (!milestone.due_on || new Date(milestone.due_on) < currentDate) {
+                break;
+              }
 
-                const { data: previousMilestoneIssuesNew } = await github.issues.listForRepo({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  state: "open",
-                  milestone: milestones[index - 1].number,
-                  per_page: 100,
-                  labels: "0 - new",
-                });
+              if (index < 1) {
+                console.log(
+                  "There is no open, past due milestone to move issues from, ending run."
+                );
+                return;
+              }
 
-                const { data: previousMilestoneIssuesAssigned } = await github.issues.listForRepo({
+              const { data: previousMilestoneIssuesNew } = await github.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: "open",
+                milestone: milestones[index - 1].number,
+                per_page: 100,
+                labels: "0 - new",
+              });
+
+              const { data: previousMilestoneIssuesAssigned } = await github.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   state: "open",
@@ -53,7 +59,7 @@ jobs:
                   labels: "1 - assigned",
                 });
 
-                const { data: previousMilestoneIssuesInDev } = await github.issues.listForRepo({
+              const { data: previousMilestoneIssuesInDev } = await github.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   state: "open",
@@ -62,21 +68,34 @@ jobs:
                   labels: "2 - in development",
                 });
 
-                const moveableIssues = [
-                  ...previousMilestoneIssuesNew,
-                  ...previousMilestoneIssuesAssigned,
-                  ...previousMilestoneIssuesInDev,
-                ];
+              const moveableIssues = [
+                ...previousMilestoneIssuesNew,
+                ...previousMilestoneIssuesAssigned,
+                ...previousMilestoneIssuesInDev,
+              ];
 
-                for (const issue of moveableIssues) {
-                  await github.issues.update({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: issue.number,
-                    milestone: milestone.number,
-                  });
-                }
-
+              if (!moveableIssues.length) {
+                console.log("There are no movable issues, ending run.");
                 return;
               }
+
+              for (const issue of moveableIssues) {
+                await github.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  milestone: milestone.number,
+                  labels: issue.labels
+                    .map((label) => label.name)
+                    .join(",")
+                    .concat(",milestone adjusted"),
+                });
+              }
+
+              console.log(
+                "Moved",
+                moveableIssues.length,
+                "issues to the current milestone, ending run."
+              );
+              return;
             }
