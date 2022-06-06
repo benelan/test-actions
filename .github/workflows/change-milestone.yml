@@ -34,9 +34,8 @@ jobs:
                 new Date(milestone.due_on) > currentDate &&
                 index > 0
               ) {
-                console.log(JSON.stringify(milestones[index - 1]))
 
-                const previousMilestoneIssuesNew = await github.issues.listForRepo({
+                const { data: previousMilestoneIssuesNew } = await github.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   state: "open",
@@ -45,7 +44,7 @@ jobs:
                   labels: "0 - new",
                 });
 
-                const previousMilestoneIssuesAssigned = await github.issues.listForRepo({
+                const { data: previousMilestoneIssuesAssigned } = await github.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   state: "open",
@@ -54,7 +53,7 @@ jobs:
                   labels: "1 - assigned",
                 });
 
-                const previousMilestoneIssuesInDev = await github.issues.listForRepo({
+                const { data: previousMilestoneIssuesInDev } = await github.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   state: "open",
@@ -63,8 +62,13 @@ jobs:
                   labels: "2 - in development",
                 });
 
-                console.log(JSON.stringify(previousMilestoneIssuesNew))
-                for (const issue of previousMilestoneIssuesNew) {
+                const moveableIssues = [
+                  ...previousMilestoneIssuesNew,
+                  ...previousMilestoneIssuesAssigned,
+                  ...previousMilestoneIssuesInDev,
+                ];
+
+                for (const issue of moveableIssues) {
                   await github.issues.update({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
