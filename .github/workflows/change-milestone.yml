@@ -7,7 +7,7 @@ on:
   issues:
     types: [labeled]
 jobs:
-  assign:
+  change:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v4
@@ -68,7 +68,7 @@ jobs:
                 ];
 
                 for (const issue of moveableIssues) {
-                  await octokit.rest.issues.update({
+                  await github.issues.update({
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     issue_number: issue.number,
