@@ -44,6 +44,6 @@ jobs:
             await github.issues.createMilestone({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              due_on: newMilestoneDueDate.toISOString()
-              title,
+              due_on: newMilestoneDueDate.toISOString(),
+              title
             });
