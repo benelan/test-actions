@@ -30,7 +30,7 @@ jobs:
 
             // close milestone if it is past due and there are no open issues/PRs
             !milestone.open_issues &&
-              Date(milestone.due_on) > currentDate &&
+              Date(milestone.due_on) < currentDate &&
               (await github.issues.updateMilestone({
                 owner,
                 repo,
