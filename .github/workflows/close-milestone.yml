@@ -1,0 +1,30 @@
+name: Close Completed Milestone
+on:
+  pull_request:
+    branches: [master]
+    types: [closed]
+  issues:
+    types: [closed]
+jobs:
+  close-milestone:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v4
+        with:
+          script: |
+            const {owner, repo, { issue, pull_request } } = context.payload;
+            const milestone_number = issue.milestone.id || pull_request.milestone.id;
+
+            const {data: milestone} = await github.issues.getMilestone({
+              owner,
+              repo,
+              milestone_number,
+            });
+
+            !milestone.open_issues &&
+              await github.issues.updateMilestone({
+                owner,
+                repo,
+                milestone_number,
+                state: "closed"
+              });
