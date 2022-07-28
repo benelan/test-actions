@@ -17,7 +17,7 @@ jobs:
               payload: { issue, pull_request },
             } = context;
 
-            const milestone_number = issue.milestone.id || pull_request.milestone.id;
+            const milestone_number = issue.milestone.number || pull_request.milestone.number;
 
             const { data: milestone } = await github.issues.getMilestone({
               owner,
