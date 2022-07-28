@@ -28,6 +28,9 @@ jobs:
             const currentDate = new Date(Date.now());
             currentDate.setUTCHours(0, 0, 0, 0);
 
+            console.log(milestone.open_issues)
+            console.log(Date(milestone.due_on) < currentDate)
+
             // close milestone if it is past due and there are no open issues/PRs
             !milestone.open_issues &&
               Date(milestone.due_on) < currentDate &&
