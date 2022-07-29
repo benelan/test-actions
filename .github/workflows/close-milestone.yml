@@ -14,13 +14,16 @@ jobs:
           script: |
             const {
               repo: { repo, owner },
-               payload: {issue, pull_request},
+              payload: { issue, pull_request },
             } = context;
 
             const milestone_number =
               issue?.milestone?.number || pull_request?.milestone?.number;
 
-            if (!milestone_number) console.log("No milestone found, ending run."); return
+            if (!milestone_number) {
+              console.log("No milestone found, ending run.");
+              return;
+            }
 
             const { data: milestone } = await github.issues.getMilestone({
               owner,
