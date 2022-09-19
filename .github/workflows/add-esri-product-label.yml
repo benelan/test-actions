@@ -9,7 +9,13 @@ jobs:
       - uses: actions/github-script@v4
         with:
           script: |
-            const product = github.event.issue.body.match(/(?<=### Esri team\n\n).*/)[0];
+          const { data: issue } = await github.issues.get({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+
+            const product = issue.body.match(/(?<=### Esri team\n\n).*/)[0];
 
             const getLabel = (product) => {
               switch (product) {
