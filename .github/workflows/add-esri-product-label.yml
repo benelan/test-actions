@@ -11,12 +11,27 @@ jobs:
           ISSUE_BODY: ${{ github.event.issue.body }}
         with:
           script: |
+
+            const { data: issue } = await github.issues.get({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
             const { ISSUE_BODY } = process.env;
             if (!ISSUE_BODY) {
-            throw new Error("Could not determine the issue body")
+              throw new Error("Could not determine the issue body")
             }
+            console.log("ISSUE_BODY:", ISSUE_BODY);
+            console.log("github.event.issue.body:", github.event.issue.body);
+            console.log("context.issue.body:", context.issue.body);
+            console.log("issue.body:", issue.body)
+
             const productRegexMatch = ISSUE_BODY.match(/(?<=### Esri team\n\n).*/);
-            const product = productRegexMatch.length ? productRegexMatch[0] : "";
+
+            if (!productRegexMatch) {
+              throw new Error("Could not determine the product")
+            }
 
             const getLabel = (product) => {
               switch (product) {
@@ -33,7 +48,7 @@ jobs:
               }
             };
 
-            const label = getLabel(product);
+            const label = getLabel(productRegexMatch[0]);
 
             if (label) {
               await github.issues.addLabels({
