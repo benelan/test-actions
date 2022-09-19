@@ -7,10 +7,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v4
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
         with:
           script: |
-            const productRegexMatch = context.issue.body.match(/(?<=### Esri team\n\n).*/);
-            const product = productRegexMatch ? productRegexMatch[0] : "";
+            const { ISSUE_BODY } = process.env;
+            if (!ISSUE_BODY) {
+            throw new Error("Could not determine the issue body")
+            }
+            const productRegexMatch = ISSUE_BODY.match(/(?<=### Esri team\n\n).*/);
+            const product = productRegexMatch.length ? productRegexMatch[0] : "";
 
             const getLabel = (product) => {
               switch (product) {
