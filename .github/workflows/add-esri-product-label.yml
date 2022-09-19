@@ -16,7 +16,8 @@ jobs:
               throw new Error("Could not determine the issue body")
             }
 
-            const productRegexMatch = ISSUE_BODY.match(/(?<=### Esri team(\r\n|\r|\n)(\r\n|\r|\n)).*/);
+            const productRegex = new RegExp("(?<=### Esri team).*", "s");
+            const productRegexMatch = ISSUE_BODY.match(productRegex);
 
             if (!productRegexMatch || !productRegexMatch[0]) {
               throw new Error("Could not determine the Esri product")
@@ -37,7 +38,7 @@ jobs:
               }
             };
 
-            const label = getLabel(productRegexMatch[0]);
+            const label = getLabel(productRegexMatch[0].trim());
 
             if (label) {
               await github.issues.addLabels({
