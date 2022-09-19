@@ -23,14 +23,12 @@ jobs:
               throw new Error("Could not determine the issue body")
             }
             console.log("ISSUE_BODY:", ISSUE_BODY);
-            console.log("github.event.issue.body:", github.event.issue.body);
             console.log("context.issue.body:", context.issue.body);
-            console.log("issue.body:", issue.body)
 
             const productRegexMatch = ISSUE_BODY.match(/(?<=### Esri team\n\n).*/);
 
-            if (!productRegexMatch) {
-              throw new Error("Could not determine the product")
+            if (!productRegexMatch || !productRegexMatch[0]) {
+              throw new Error("Could not determine the Esri product")
             }
 
             const getLabel = (product) => {
