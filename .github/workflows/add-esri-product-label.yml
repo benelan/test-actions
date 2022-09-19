@@ -1,0 +1,38 @@
+name: Add Esri Product Label
+on:
+  issues:
+    types: [opened, edited]
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v4
+        with:
+          script: |
+            const product = context.issue.body.match(/(?<=### Esri team\n\n).*/)[0];
+
+            const getLabel = (product) => {
+              switch (product) {
+                case "ArcGIS Map Viewer":
+                  return "MV";
+                case "ArcGIS API for JavaScript":
+                  return "JSAPI";
+                case "ArcGIS Hub":
+                  return "Hub";
+                case "ArcGIS Dashboard":
+                  return "Dashboard";
+                default:
+                  return "";
+              }
+            };
+
+            const label = getLabel(product);
+
+            if (label) {
+              github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: [label],
+              });
+            }
