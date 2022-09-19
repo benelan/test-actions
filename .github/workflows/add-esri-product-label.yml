@@ -11,21 +11,12 @@ jobs:
           ISSUE_BODY: ${{ github.event.issue.body }}
         with:
           script: |
-
-            const { data: issue } = await github.issues.get({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-
             const { ISSUE_BODY } = process.env;
             if (!ISSUE_BODY) {
               throw new Error("Could not determine the issue body")
             }
-            console.log("ISSUE_BODY:", ISSUE_BODY);
-            console.log("context.issue.body:", context.issue.body);
 
-            const productRegexMatch = ISSUE_BODY.match(/(?<=### Esri team\n\n).*/);
+            const productRegexMatch = ISSUE_BODY.match(/(?<=### Esri team(\r\n|\r|\n)(\r\n|\r|\n)).*/);
 
             if (!productRegexMatch || !productRegexMatch[0]) {
               throw new Error("Could not determine the Esri product")
