@@ -17,6 +17,10 @@ jobs:
               repo: { owner, repo },
             } = context;
 
+            console.log(github.event.issue.body)
+            console.log(body)
+            console.log(ISSUE_BODY)
+
             if (!body) {
               throw new Error("Could not determine the issue body");
             }
