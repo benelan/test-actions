@@ -50,7 +50,8 @@ jobs:
               const labels = currentLabels
                 .filter((l) => !/Issues logged by/.test(l.description))
                 .map((l) => l.name)
-                .push(product);
+
+              labels.push(product);
 
               console.log(labels)
 
