@@ -12,24 +12,60 @@ jobs:
         with:
           script: |
             const { ISSUE_BODY } = process.env;
+            const {
+              issue: { number: issue_number },
+              repo: { owner, repo },
+            } = context;
+
             if (!ISSUE_BODY) {
-              throw new Error("Could not determine the issue body")
+              throw new Error("Could not determine the issue body");
             }
 
-            const productRegex = new RegExp("(?<=### Esri team).*", "s");
+            const productRegex = new RegExp("(?<=### Esri team[\r\n].*[\r\n].*)^.*$", "m");
             const productRegexMatch = ISSUE_BODY.match(productRegex);
 
             if (!productRegexMatch || !productRegexMatch[0]) {
-              throw new Error("Could not determine the Esri product")
+              throw new Error("Could not determine the Esri product");
             }
 
             const product = productRegexMatch[0].trim();
 
             if (product && product !== "N/A") {
+              const { data: productLabelExists } = await github.issues.getLabel({
+                issue_number,
+                owner,
+                repo,
+                name: product,
+              });
+
+              if (!productLabelExists) {
+                await github.issues.createLabel({
+                  issue_number,
+                  owner,
+                  repo,
+                  name: product,
+                  color: "#006B75",
+                  description: `Issues logged by ${product} team members.`,
+                });
+              }
+
+              const { data: issueLabels } = await github.issue.listLabelsOnIssue({
+                owner,
+                repo,
+                issue_number,
+                per_page: 100,
+              });
+
+              // remove any existing product label
+              const labels = issueLabels
+                .filter((l) => !/Issues logged by/.test(l.description))
+                .map((l) => l.name)
+                .push(product);
+
               await github.issues.addLabels({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                labels: [product],
+                issue_number,
+                owner,
+                repo,
+                labels,
               });
             }
