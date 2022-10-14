@@ -6,10 +6,6 @@ jobs:
   label:
     runs-on: ubuntu-latest
     steps:
-
-      - run: echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
       - uses: actions/github-script@v4
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
@@ -19,12 +15,13 @@ jobs:
             const {
               issue: { number: issue_number, body },
               repo: { owner, repo },
+              payload
             } = context;
 
             console.log(ISSUE_BODY)
-            console.log(body)
+            console.log(payload)
 
-            if (!body) {
+            if (!ISSUE_BODY) {
               throw new Error("Could not determine the issue body");
             }
 
