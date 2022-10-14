@@ -18,7 +18,7 @@ jobs:
               throw new Error("Could not determine the issue body");
             }
 
-            const productRegex = new RegExp((?<=### Esri team\r\n\r\n).+", "m");
+            const productRegex = new RegExp("(?<=### Esri team\r\n\r\n).+", "m");
             const productRegexMatch = body.match(productRegex);
 
             if (!productRegexMatch || !productRegexMatch[0]) {
