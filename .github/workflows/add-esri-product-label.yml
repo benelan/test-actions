@@ -3,7 +3,7 @@ on:
   issues:
     types: [opened, edited]
 jobs:
-  assign:
+  label:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v4
@@ -49,7 +49,7 @@ jobs:
                 });
               }
 
-              const { data: issueLabels } = await github.issue.listLabelsOnIssue({
+              const { data: issueLabels } = await github.issues.listLabelsOnIssue({
                 owner,
                 repo,
                 issue_number,
