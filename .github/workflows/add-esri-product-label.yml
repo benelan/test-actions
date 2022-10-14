@@ -11,7 +11,9 @@ jobs:
           script: |
             const {
               repo: { owner, repo },
-              payload: { issue: { body, labels: currentLabels, number: issue_number } }
+              payload: {
+                issue: { body, labels: currentLabels, number: issue_number },
+              },
             } = context;
 
             if (!body) {
@@ -28,15 +30,14 @@ jobs:
             const product = productRegexMatch[0].trim();
 
             if (product && product !== "N/A") {
-              const { data: productLabelExists } = await github.issues.getLabel({
-                owner,
-                repo,
-                name: product,
-              });
-
-              console.log(JSON.stringify(productLabelExists))
-
-              if (!productLabelExists) {
+            /** Creates a label if it does not exist */
+             try {
+                await github.issues.getLabel({
+                  owner,
+                  repo,
+                  name: product,
+                });
+              } catch (e) {
                 await github.issues.createLabel({
                   owner,
                   repo,
@@ -46,14 +47,12 @@ jobs:
                 });
               }
 
-              // remove any existing product label
+              /** remove any existing product label(s) */
               const labels = currentLabels
                 .filter((l) => !/Issues logged by/.test(l.description))
-                .map((l) => l.name)
+                .map((l) => l.name);
 
               labels.push(product);
-
-              console.log(labels)
 
               await github.issues.setLabels({
                 issue_number,
