@@ -38,11 +38,10 @@ jobs:
 
               if (!productLabelExists) {
                 await github.issues.createLabel({
-                  issue_number,
                   owner,
                   repo,
                   name: product,
-                  color: "#006B75",
+                  color: "006B75",
                   description: `Issues logged by ${product} team members.`,
                 });
               }
@@ -53,7 +52,9 @@ jobs:
                 .map((l) => l.name)
                 .push(product);
 
-              await github.issues.addLabels({
+              console.log(labels)
+
+              await github.issues.setLabels({
                 issue_number,
                 owner,
                 repo,
