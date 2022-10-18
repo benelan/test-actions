@@ -31,7 +31,7 @@ jobs:
             const match = commitMessage.match(conventionalCommitRegex);
             if (match && match.length > 1) {
               const labels = [getLabelName(match[1])];
-              await octokit.rest.issues.addLabels({
+              await github.issues.addLabels({
                 owner,
                 repo,
                 issue_number,
