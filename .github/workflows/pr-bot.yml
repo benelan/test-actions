@@ -10,7 +10,7 @@ jobs:
   label:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v4
+      - uses: actions/github-script@v6
         with:
           script: |
             const {
@@ -30,7 +30,7 @@ jobs:
             const match = commitMessage.match(conventionalCommitRegex);
             if (match && match.length > 1) {
               const labels = [getLabelName(match[1])];
-              await github.issues.addLabels({
+              await github.rest.issues.addLabels({
                 owner,
                 repo,
                 issue_number,
