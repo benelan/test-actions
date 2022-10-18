@@ -5,29 +5,8 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Get release version
-        uses: actions/github-script@v4
+      - name: Send notification
         env:
-          TEAMS_WEBHOOK_URI_RELEASE: ${{ secrets.TEAMS_WEBHOOK_URI_RELEASE }}
-        with:
-          script: |
-            const release = { "tag_name": "1.0.0-test.1337"} // context.payload.release;
-            if (!release && !release.tag_name) {
-              console.log("No release found")
-              return
-            }
-
-            const data = {
-              "@context": "http://schema.org/extensions",
-              "@type": "MessageCard",
-              title: release.tag_name,
-              text: `🚀 <code>@esri/calcite-components@${release.tag_name}</code> released! Check out the [changelog](https://github.com/Esri/calcite-components/blob/master/CHANGELOG.md#changelog) for more info. 🚀`
-            };
-
-            await fetch(process.env.TEAMS_WEBHOOK_URI_RELEASE, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify(data)
-            });
+          release_tag_name: 123.456
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{"@context": "http://schema.org/extensions", "@type": "MessageCard", "title": ${{ env.release_tag_name }}, "text": "🚀 <code>@esri/calcite-components@${{ env.release_tag_name }}</code> released! Check out the [changelog](https://github.com/Esri/calcite-components/blob/master/CHANGELOG.md#changelog) for more info. 🚀"}' ${{ secrets.TEAMS_WEBHOOK_URI_RELEASE }}
