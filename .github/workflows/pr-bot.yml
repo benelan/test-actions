@@ -32,7 +32,7 @@ jobs:
             if (match && match.length > 1) {
               const labels = [...currentLabels, getLabelName(match[1])];
 
-              await github.issues.setLabels({
+              await github.rest.issues.setLabels({
                 issue_number,
                 owner,
                 repo,
