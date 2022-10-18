@@ -5,8 +5,7 @@
 # https://octokit.github.io/rest.js/v18#issues-list-for-repo
 name: Change Milestone
 on:
-  schedule:
-    - cron: "0 9 * * 1"
+  workflow_dispatch:
 jobs:
   change:
     runs-on: ubuntu-latest
