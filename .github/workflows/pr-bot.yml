@@ -14,26 +14,29 @@ jobs:
         with:
           script: |
             const {
-              payload: { issue, pull_request }
+              repo: { owner, repo },
+              payload: {
+                pull_request: { title, number: issue_number },
+              },
             } = context;
 
             const conventionalCommitRegex =
               /^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([\w ,-]+\))?(!?:\s+)([\w ]+[\s\S]*)/i;
 
-            const commitMessage = (issue && issue.title) || (pull_request && pull_request.title);
-            if (!commitMessage) {
+            if (!title) {
               console.log("No title found, ending run.");
               return;
             }
 
-            const match = commitMessage.match(conventionalCommitRegex);
+            const match = title.match(conventionalCommitRegex);
             if (match && match.length > 1) {
-              const labels = [getLabelName(match[1])];
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.repo.issue_number,
-                labels
+              const labels = [...currentLabels, getLabelName(match[1])];
+
+              await github.issues.setLabels({
+                issue_number,
+                owner,
+                repo,
+                labels,
               });
 
               function getLabelName(type) {
