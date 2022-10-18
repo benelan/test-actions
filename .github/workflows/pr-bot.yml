@@ -16,7 +16,7 @@ jobs:
             const {
               repo: { owner, repo },
               payload: {
-                pull_request: { title, number: issue_number },
+                pull_request: { title, number: issue_number, labels: currentLabels },
               },
             } = context;
 
