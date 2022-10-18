@@ -1,5 +1,5 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# . "$(dirname "$0")/_/husky.sh"
 
 # git diff --exit-code --name-only -- . ':(exclude)*.md'
 # if [ $? -eq 0 ]; then
