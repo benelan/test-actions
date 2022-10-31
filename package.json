@@ -29,6 +29,6 @@
   },
   "homepage": "https://github.com/benelan/test#readme",
   "dependencies": {
-    "caniuse-lite": "^1.0.30001421"
+    "caniuse-lite": "^1.0.30001427"
   }
 }
