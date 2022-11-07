@@ -13,7 +13,7 @@ jobs:
             const {
               assignees: currentAssignees,
               number: issue_number,
-              sender: { login: author },
+              user: { login: author },
               repo: {
                 name: repo,
                 owner: { login: owner },
@@ -54,7 +54,8 @@ jobs:
 
             const match = title.match(conventionalCommitRegex);
             if (match && match.length > 1) {
-              const labels = [...currentLabels, getLabelName(match[1])];
+              // make sure there aren't any duplicates
+              const labels = Array.from(new Set(...currentLabels, getLabelName(match[1])));
 
               await github.rest.issues.setLabels({
                 issue_number,
