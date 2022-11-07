@@ -2,7 +2,7 @@ name: "Update browserslist db"
 on:
   workflow_dispatch:
 jobs:
-  update-component-doc:
+  updatec:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
