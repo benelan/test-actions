@@ -1,12 +1,21 @@
 name: PR Bot
 on:
   pull_request:
+    types: [opened]
     branches: [master]
 jobs:
-  milestone:
+  assign:
     runs-on: ubuntu-latest
     steps:
-      - uses: benelan/milestone-action@v1.1.0
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.issues.addAssignees({
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               issue: context.repo.issue_number,
+               assignees: [...context.payload.pull_request.assignees, context.payload.pull_request.login]
+             });
   label:
     runs-on: ubuntu-latest
     steps:

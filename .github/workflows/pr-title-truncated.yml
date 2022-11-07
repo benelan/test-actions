@@ -1,11 +1,66 @@
+# Borrowed from an action that is no longer maintained
+# https://github.com/deepakputhraya/action-pr-title
 name: PR title is not truncated (...)
 on: pull_request
 jobs:
   semantic:
     runs-on: ubuntu-latest
     steps:
-      - uses: deepakputhraya/action-pr-title@v1.0.2
+      - uses: actions/github-script@v6
         with:
-          regex: "^[^…]+$"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          regex: "^[^…]+$" # Regex the title should match.
+          allowed_prefixes: '' # title should start with the given prefix
+          disallowed_prefixes: '' # title should not start with the given prefix
+          prefix_case_sensitive: false # title prefix are case insensitive
+          min_length: 1 # Min length of the title
+          max_length: -1 # Max length of the title
+          github_token: ${{ github.token }} # Default: ${{ github.token }}
+          script: |
+            const title = context.payload.pull_request.title;
+
+            // Check if title pass regex
+            if (!regex.test(core.getInput(title))) {
+                core.setFailed(`Pull Request title "${title}" failed to pass match regex - ${regex}`);
+                return
+            }
+
+            // Check min length
+            const minLen = parseInt(core.getInput('min_length'));
+            if (title.length < minLen) {
+                core.setFailed(`Pull Request title "${title}" is smaller than min length specified - ${minLen}`);
+                return
+            }
+
+            // Check max length
+            const maxLen = parseInt(core.getInput('max_length'));
+            if (maxLen > 0 && title.length > maxLen) {
+                core.setFailed(`Pull Request title "${title}" is greater than max length specified - ${maxLen}`);
+                return
+            }
+
+            // Check if title starts with an allowed prefix
+            let prefixes = core.getInput('allowed_prefixes');
+            const prefixCaseSensitive = (core.getInput('prefix_case_sensitive') === 'true');
+            core.info(`Allowed Prefixes: ${prefixes}`);
+            if (prefixes.length > 0 && !prefixes.split(',').some((el) => validateTitlePrefix(title, el, prefixCaseSensitive))) {
+                core.setFailed(`Pull Request title "${title}" did not match any of the prefixes - ${prefixes}`);
+                return
+            }
+
+            // Check if title starts with a disallowed prefix
+            prefixes = core.getInput('disallowed_prefixes');
+            core.info(`Disallowed Prefixes: ${prefixes}`);
+            if (prefixes.length > 0 && prefixes.split(',').some((el) => validateTitlePrefix(title, el, prefixCaseSensitive))) {
+                core.setFailed(`Pull Request title "${title}" matched with a disallowed prefix - ${prefixes}`);
+                return
+            }
+
+            function validateTitlePrefix(title, prefix, caseSensitive) {
+                if (!caseSensitive) {
+                    prefix = prefix.toLowerCase();
+                    title = title.toLowerCase();
+                }
+                return title.startsWith(prefix);
+            }
+
+
