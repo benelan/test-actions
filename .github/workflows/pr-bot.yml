@@ -14,9 +14,11 @@ jobs:
               assignees: currentAssignees,
               number: issue_number,
               user: { login: author },
-              repo: {
-                name: repo,
-                owner: { login: owner },
+              base: {
+                repo: {
+                  name: repo,
+                  owner: { login: owner },
+                },
               },
             } = context.payload.pull_request;
 
@@ -54,8 +56,10 @@ jobs:
 
             const match = title.match(conventionalCommitRegex);
             if (match && match.length > 1) {
+              // commit type is in the first match group
+              const newLabel = getLabelName(match[1]))
               // make sure there aren't any duplicates
-              const labels = Array.from(new Set(...currentLabels, getLabelName(match[1])));
+              const labels = [...currentLabels.map(l => l.name).filter(l => l !== newLabel), newLabel];
 
               await github.rest.issues.setLabels({
                 issue_number,
