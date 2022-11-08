@@ -40,11 +40,16 @@ jobs:
         with:
           script: |
             const {
-              repo: { owner, repo },
-              payload: {
-                pull_request: { title, number: issue_number, labels: currentLabels },
+              title,
+              number: issue_number,
+              labels: currentLabels,
+              base: {
+                repo: {
+                  name: repo,
+                  owner: { login: owner },
+                },
               },
-            } = context;
+            } = context.payload.pull_request;
 
             const conventionalCommitRegex =
               /^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([\w ,-]+\))?(!?:\s+)([\w ]+[\s\S]*)/i;
@@ -57,12 +62,9 @@ jobs:
             const match = title.match(conventionalCommitRegex);
             if (match && match.length > 1) {
               // commit type is in the first match group
-              const newLabel = getLabelName(match[1]))
+              const newLabel = getLabelName(match[1]);
               // make sure there aren't any duplicates
-              const labels = currentLabels
-                .map((l) => l.name);
-                .filter((l) => l !== newLabel)
-
+              const labels = currentLabels.map((l) => l.name).filter((l) => l !== newLabel);
               labels.push(newLabel);
 
               await github.rest.issues.setLabels({
