@@ -59,7 +59,11 @@ jobs:
               // commit type is in the first match group
               const newLabel = getLabelName(match[1]))
               // make sure there aren't any duplicates
-              const labels = [...currentLabels.map(l => l.name).filter(l => l !== newLabel), newLabel];
+              const labels = currentLabels
+                .map((l) => l.name);
+                .filter((l) => l !== newLabel)
+
+              labels.push(newLabel);
 
               await github.rest.issues.setLabels({
                 issue_number,
