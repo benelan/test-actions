@@ -10,28 +10,20 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const {
-              assignees: currentAssignees,
-              number: issue_number,
-              user: { login: author },
-              base: {
-                repo: {
-                  name: repo,
-                  owner: { login: owner },
-                },
-              },
-            } = context.payload.pull_request;
+            const currentAssignees = context.payload.pull_request.assignees.map(
+              (a) => a.login
+            );
 
-            const assignees =
+            const assigneesAndAuthor =
               currentAssignees && currentAssignees.length
-                ? [...currentAssignees.map((a) => a.login), author]
+                ? [...currentAssignees, author]
                 : [author];
 
             github.rest.issues.addAssignees({
-              owner,
-              repo,
-              issue_number,
-              assignees
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              assignees: assigneesAndAuthor,
             });
   label:
     runs-on: ubuntu-latest
@@ -39,17 +31,7 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            const {
-              title,
-              number: issue_number,
-              labels: currentLabels,
-              base: {
-                repo: {
-                  name: repo,
-                  owner: { login: owner },
-                },
-              },
-            } = context.payload.pull_request;
+            const { title, labels, number} = context.payload.pull_request;
 
             const conventionalCommitRegex =
               /^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([\w ,-]+\))?(!?:\s+)([\w ]+[\s\S]*)/i;
@@ -64,14 +46,14 @@ jobs:
               // commit type is in the first match group
               const newLabel = getLabelName(match[1]);
               // make sure there aren't any duplicates
-              const labels = currentLabels.map((l) => l.name).filter((l) => l !== newLabel);
-              labels.push(newLabel);
+              const updatedLabels = labels.map((l) => l.name).filter((l) => l !== newLabel);
+              updatedLabels.push(newLabel);
 
               await github.rest.issues.setLabels({
-                issue_number,
-                owner,
-                repo,
-                labels,
+                issue_number: number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: updatedLabels,
               });
 
               function getLabelName(type) {
