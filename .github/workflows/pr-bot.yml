@@ -18,7 +18,7 @@ jobs:
 
             const updatedAssignees =
               assignees && assignees.length
-                ? [...assignees.assignees.map((a) => a.login), author]
+                ? [...assignees.map((a) => a.login), author]
                 : [author];
 
             github.rest.issues.addAssignees({
