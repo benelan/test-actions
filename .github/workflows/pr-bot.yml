@@ -4,28 +4,30 @@ on:
     # types: [opened]
     branches: [master]
 jobs:
-  assign:
+  assign-author:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
         with:
           script: |
-            const currentAssignees = context.payload.pull_request.assignees.map(
-              (a) => a.login
-            );
+            const {
+              assignees,
+              number,
+              user: { login: author },
+            } = context.payload.pull_request;
 
-            const assigneesAndAuthor =
-              currentAssignees && currentAssignees.length
-                ? [...currentAssignees, author]
+            const updatedAssignees =
+              assignees && assignees.length
+                ? [...assignees.assignees.map((a) => a.login), author]
                 : [author];
 
             github.rest.issues.addAssignees({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              assignees: assigneesAndAuthor,
+              issue_number: number,
+              assignees: updatedAssignees,
             });
-  label:
+  label-type:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
