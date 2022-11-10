@@ -4,7 +4,7 @@ on:
     branches: [master]
 jobs:
   assign-author:
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
@@ -16,19 +16,18 @@ jobs:
               user: { login: author },
             } = context.payload.pull_request;
 
-            if (author !== "dependabot[bot]")
-              const updatedAssignees =
-                assignees && assignees.length
-                  ? [...assignees.map((a) => a.login).filter(a => a !== author), author]
-                  : [author];
 
-              await github.rest.issues.addAssignees({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: number,
-                assignees: updatedAssignees,
-              });
-            }
+            const updatedAssignees =
+              assignees && assignees.length
+                ? [...assignees.map((a) => a.login).filter(a => a !== author), author]
+                : [author];
+
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: number,
+              assignees: updatedAssignees,
+            });
   label-type:
     runs-on: ubuntu-latest
     steps:
