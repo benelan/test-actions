@@ -1,10 +1,10 @@
 name: PR Bot
 on:
   pull_request:
-    # types: [opened]
     branches: [master]
 jobs:
   assign-author:
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
@@ -18,10 +18,10 @@ jobs:
 
             const updatedAssignees =
               assignees && assignees.length
-                ? [...assignees.map((a) => a.login), author]
+                ? [...assignees.map((a) => a.login).filter(a => a !== author), author]
                 : [author];
 
-            github.rest.issues.addAssignees({
+            await github.rest.issues.addAssignees({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: number,
