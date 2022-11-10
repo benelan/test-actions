@@ -1,41 +1,61 @@
 name: PR Bot
 on:
   pull_request:
-    types: [opened]
     branches: [master]
 jobs:
-  milestone:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: benelan/milestone-action@v1.1.0
-  label:
+  assign-author:
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
         with:
           script: |
             const {
-              repo: { owner, repo, number: issue_number },
-              payload: { issue, pull_request }
-            } = context;
+              assignees,
+              number,
+              user: { login: author },
+            } = context.payload.pull_request;
+
+            const updatedAssignees =
+              assignees && assignees.length
+                ? [...assignees.map((a) => a.login).filter(a => a !== author), author]
+                : [author];
+
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: number,
+              assignees: updatedAssignees,
+            });
+  label-type:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const { title, labels, number} = context.payload.pull_request;
 
             const conventionalCommitRegex =
               /^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([\w ,-]+\))?(!?:\s+)([\w ]+[\s\S]*)/i;
 
-            const commitMessage = (issue && issue.title) || (pull_request && pull_request.title);
-            if (!commitMessage) {
+            if (!title) {
               console.log("No title found, ending run.");
               return;
             }
 
-            const match = commitMessage.match(conventionalCommitRegex);
+            const match = title.match(conventionalCommitRegex);
             if (match && match.length > 1) {
-              const labels = [getLabelName(match[1])];
-              await octokit.rest.issues.addLabels({
-                owner,
-                repo,
-                issue_number,
-                labels
+              // commit type is in the first match group
+              const newLabel = getLabelName(match[1]);
+              // make sure there aren't any duplicates
+              const updatedLabels = labels.map((l) => l.name).filter((l) => l !== newLabel);
+              updatedLabels.push(newLabel);
+
+              await github.rest.issues.setLabels({
+                issue_number: number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: updatedLabels,
               });
 
               function getLabelName(type) {

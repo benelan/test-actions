@@ -7,7 +7,7 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
@@ -32,12 +32,12 @@ jobs:
           fi
       - if: steps.build.outputs.skip == 'false'
         name: setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: lts/*
       - if: steps.build.outputs.skip == 'false'
         name: install dependencies for sample metrics scripts
-        run: | 
+        run: |
           cd ./.github/scripts/
           npm ci
       - if: steps.build.outputs.skip == 'false'
