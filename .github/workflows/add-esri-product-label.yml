@@ -30,7 +30,7 @@ jobs:
                   // requires this exact format for edits
                   "(?<=### Esri team\r\n\r\n).+"
                 : // otherwise it depends on the submitter's OS
-                  "(?<=### Esri team[\r\n|\r|\n]{2})S.+$",
+                  "(?<=### Esri team[\r\n|\r|\n]{2}).+$",
               "m"
             );
 
