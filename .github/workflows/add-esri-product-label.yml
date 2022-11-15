@@ -26,7 +26,7 @@ jobs:
             const productEditRegex = new RegExp("(?<=### Esri team\r\n\r\n).+", "m");
             const productCreateRegexMatch = body.match(productRegex);
             const productRegexEditMatch = body.match(productEditRegex);
-            const productRegexMatch == productCreateRegexMatch || productEditRegexMatch;
+            const productRegexMatch = productCreateRegexMatch || productEditRegexMatch;
 
             if (!productRegexMatch || !productRegexMatch[0]) {
               console.log("Could not determine the Esri product");
