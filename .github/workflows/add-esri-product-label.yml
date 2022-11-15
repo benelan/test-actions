@@ -21,19 +21,20 @@ jobs:
               return;
             }
 
-            const productRegex = new RegExp("(?<=### Esri team[\r\n|\r|\n\]{2})\S.+$", "m");
-            // the way GitHub breaks up the issue body requires this exact format 
+            const productRegex = new RegExp("(?<=### Esri team[\r\n|\r|\n]{2})S.+$", "m");
+            // the way GitHub parses the issue body into plaintext requires this exact format
             const productEditRegex = new RegExp("(?<=### Esri team\r\n\r\n).+", "m");
+
             const productCreateRegexMatch = body.match(productRegex);
             const productEditRegexMatch = body.match(productEditRegex);
-            const productRegexMatch = productCreateRegexMatch[0] || productEditRegexMatch[0];
 
-            if (!productRegexMatch || !productRegexMatch[0]) {
-              console.log("Could not determine the Esri product");
-              return;
-            }
-
-            const product = productRegexMatch[0].trim();
+            const product = (
+              productCreateRegexMatch && productCreateRegexMatch[0]
+                ? productCreateRegexMatch[0]
+                : productEditRegexMatch && productEditRegexMatch[0]
+                ? productEditRegexMatch[0]
+                : ""
+            ).trim();
 
             if (product && product !== "N/A") {
               /** Creates a label if it does not exist */
@@ -67,4 +68,3 @@ jobs:
                 labels,
               });
             }
-
