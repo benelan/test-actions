@@ -12,6 +12,7 @@ jobs:
             const {
               repo: { owner, repo },
               payload: {
+                action,
                 issue: { body, labels: currentLabels, number: issue_number },
               },
             } = context;
@@ -21,19 +22,22 @@ jobs:
               return;
             }
 
-            const productRegex = new RegExp("(?<=### Esri team[\r\n|\r|\n]{2})S.+$", "m");
-            // the way GitHub parses the issue body into plaintext requires this exact format
-            const productEditRegex = new RegExp("(?<=### Esri team\r\n\r\n).+", "m");
+            console.log("Event:", action);
 
-            const productCreateRegexMatch = body.match(productRegex);
-            const productEditRegexMatch = body.match(productEditRegex);
+            const productRegex = new RegExp(
+              action === "edited"
+                ? // the way GitHub parses the issue body into plaintext
+                  // requires this exact format for edits
+                  "(?<=### Esri team\r\n\r\n).+"
+                : // otherwise it depends on the submitter's OS
+                  "(?<=### Esri team[\r\n|\r|\n]{2})S.+$",
+              "m"
+            );
+
+            const productRegexMatch = body.match(productRegex);
 
             const product = (
-              productCreateRegexMatch && productCreateRegexMatch[0]
-                ? productCreateRegexMatch[0]
-                : productEditRegexMatch && productEditRegexMatch[0]
-                ? productEditRegexMatch[0]
-                : ""
+              productRegexMatch && productRegexMatch[0] ? productRegexMatch[0] : ""
             ).trim();
 
             if (product && product !== "N/A") {
