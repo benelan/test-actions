@@ -1,5 +1,5 @@
 # Test
-Repo for testing GitHub Actions and other fun automation stuffs
+Repo for testing GitHub Actions and other fun automation stuffs n things
 
 ## my actions
 - [milestone-action](https://github.com/benelan/milestone-action)
