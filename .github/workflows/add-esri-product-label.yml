@@ -22,8 +22,6 @@ jobs:
               return;
             }
 
-            console.log("Event:", action);
-
             const productRegex = new RegExp(
               action === "edited"
                 ? // the way GitHub parses the issue body into plaintext
