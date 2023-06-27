@@ -26,7 +26,7 @@ jobs:
             const packageRegex = /(?<=\[X\]\s@esri\/)[\w-]*$/gm;
             const packages = body.match(packageRegex);
 
-            if (packages.length) {
+            if (packages?.length) {
               for (const package of packages) {
                 /** Creates a label if it does not exist */
                 try {
