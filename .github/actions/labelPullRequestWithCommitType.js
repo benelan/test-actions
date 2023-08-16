@@ -1,4 +1,4 @@
-module.exports = async ({ github, context }) => {
+export default async ({ github, context }) => {
   try {
     const { title, number } = context.payload.pull_request;
 
@@ -42,7 +42,9 @@ module.exports = async ({ github, context }) => {
       }
     }
   } catch (e) {
-    console.error("Unable to label pull request, the author likely does not have write permissions");
+    console.error(
+      "Unable to label pull request, the author likely does not have write permissions",
+    );
     console.error(e);
   }
 };
