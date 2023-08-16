@@ -1,8 +1,9 @@
 name: ESM Sample Metrics
 on:
-  pull_request:
-    types: [opened, reopened, synchronize, labeled, unlabeled]
-    branches: [master]
+  worflow_dispatch:
+  # pull_request:
+  #   types: [opened, reopened, synchronize, labeled, unlabeled]
+  #   branches: [master]
 jobs:
   analyze:
     runs-on: ubuntu-latest
