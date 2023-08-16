@@ -1,4 +1,4 @@
-export default async ({ github, context }) => {
+module.exports = async ({ github, context }) => {
   const {
     assignees,
     number,
@@ -19,8 +19,8 @@ export default async ({ github, context }) => {
     });
   } catch (e) {
     console.error(
-      "Unable to assign the PR author, they likely do not have write permissions",
+      "Unable to assign the PR author, they likely do not have write permissions\n",
+      e,
     );
-    console.error(e);
   }
 };
