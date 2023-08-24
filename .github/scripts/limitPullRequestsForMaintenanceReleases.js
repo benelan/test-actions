@@ -1,6 +1,4 @@
 module.exports = async ({ github, context, core }) => {
-  const labels = github?.event?.pull_request?.labels ?? [];
-  console.log("Labels:", labels);
   const { data: milestones } = await github.rest.issues.listMilestones({
     owner: context.repo.owner,
     repo: context.repo.repo,
@@ -10,40 +8,45 @@ module.exports = async ({ github, context, core }) => {
     direction: "asc",
   });
 
-  console.log("Milestones:", milestones);
-
   if (!milestones.length) {
     core.notice("There are no open milestones in this repo, ending run.");
     process.exit(0);
   }
 
+  const { data: issue } = await github.rest.issues.get({
+    issue_number: context.issue.number,
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+  });
+
   const allowedLabels = ["low risk", "p - high", "p - critical", "regression"];
 
-  labels.forEach((label) => {
-    if (allowedLabels.includes(label.name)) {
-      core.notice(
-        `Pull request has the "${label.name}" label, which allows installs during Maintenance milestones.`,
-      );
-      process.exit(0);
-    }
-  });
+  if (issue.labels.length) {
+    console.log("Pull request labels:", issue.labels);
+
+    issue.labels.forEach((label) => {
+      if (allowedLabels.includes(label.name)) {
+        core.notice(
+          `Pull request has the "${label.name}" label, which allows installs during Maintenance milestones.`,
+        );
+        process.exit(0);
+      }
+    });
+  }
 
   const currentDate = new Date(Date.now());
   for (const [index, milestone] of milestones.entries()) {
     if (!milestone?.due_on || new Date(milestone?.due_on) < currentDate) {
-      core.notice(
-        "Skipping milestone",
-        milestone.title,
-        "because it is past due or doesn't have a due date",
+      console.log(
+        `Skipping milestone "${milestone.title}" because it is past due or doesn't have a due date`,
       );
       continue;
     }
 
-    if (/Maintenance/i.test(milestone[index - 1]?.title)) {
+    console.log(`Current milestone is "${milestone?.title}"`);
+    if (/Maintenance/i.test(milestone?.title)) {
       core.setFailed(
-        `Installing this pull request is blocked until the Maintenance milestone ends (${
-          milestone[index - 1]?.due_on
-        }). Add one of the following labels to prevent this error: ${allowedLabels}.`,
+        `Installing this pull request is blocked until the Maintenance milestone ends (${milestone?.due_on}). Add one of the following labels to prevent this error: ${allowedLabels}.`,
       );
     } else {
       core.notice("Current milestone is not a Maintenance release");
