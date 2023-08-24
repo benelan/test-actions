@@ -23,11 +23,10 @@ module.exports = async ({ github, context, core }) => {
 
   if (issue.labels.length) {
     console.log("Pull request labels:", issue.labels);
-
     issue.labels.forEach((label) => {
       if (allowedLabels.includes(label.name)) {
         core.notice(
-          `Pull request has the "${label.name}" label, which allows installs during Maintenance milestones.`,
+          `Pull request has the "${label.name}" label, which allows installs during Maintenance milestones. Ending run.`,
         );
         process.exit(0);
       }
@@ -35,21 +34,27 @@ module.exports = async ({ github, context, core }) => {
   }
 
   const currentDate = new Date(Date.now());
-  for (const [index, milestone] of milestones.entries()) {
+  for (const milestone of milestones) {
     if (!milestone?.due_on || new Date(milestone?.due_on) < currentDate) {
       console.log(
-        `Skipping milestone "${milestone.title}" because it is past due or doesn't have a due date`,
+        `Skipping open milestone "${milestone.title}" because it is past due or doesn't have a due date.`,
       );
       continue;
     }
 
-    console.log(`Current milestone is "${milestone?.title}"`);
+    console.log(`The current milestone is "${milestone?.title}".`);
     if (/Maintenance/i.test(milestone?.title)) {
       core.setFailed(
-        `Installing this pull request is blocked until the Maintenance milestone ends (${milestone?.due_on}). Add one of the following labels to prevent this error: ${allowedLabels}.`,
+        `Installing this pull request is blocked until the Maintenance milestone ends (${
+          milestone?.due_on.split("T")[0]
+        }). Add one of the following labels to prevent this error: ${JSON.stringify(
+          allowedLabels,
+        )}.`,
       );
     } else {
-      core.notice("Current milestone is not a Maintenance release");
+      core.notice(
+        "The current milestone is not for a Maintenance release, ending run.",
+      );
       process.exit(0);
     }
   }
