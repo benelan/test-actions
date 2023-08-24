@@ -26,14 +26,14 @@ module.exports = async ({ github, context, core }) => {
 
   const currentDate = new Date(Date.now());
   for (const [index, milestone] of milestones.entries()) {
-    if (!milestone.due_on || new Date(milestone.due_on) > currentDate) {
+    if (!milestone?.due_on || new Date(milestone?.due_on) > currentDate) {
       continue;
     }
 
-    if (milestone[index - 1].title.match("Maintenance")) {
+    if (milestone[index - 1]?.title?.match("Maintenance")) {
       core.setFailed(
         `Installing this pull request is blocked until the Maintenance milestone ends (${
-          milestone[index - 1].due_one
+          milestone[index - 1]?.due_on
         }). Add one of the following labels to prevent this error: ${allowedLabels}.`
       );
     } else {
