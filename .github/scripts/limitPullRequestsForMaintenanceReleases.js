@@ -1,4 +1,6 @@
 module.exports = async ({ github, context, core }) => {
+  const labels = github?.event?.pull_request?.labels ?? []
+
   const { data: milestones } = await github.rest.issues.listMilestones({
     owner: context.repo.owner,
     repo: context.repo.repo,
@@ -15,7 +17,7 @@ module.exports = async ({ github, context, core }) => {
 
   const allowedLabels = ["low risk", "p - high", "p - critical", "regression"];
 
-  github.event.pull_request.labels.forEach((label) => {
+  labels.forEach((label) => {
     if (allowedLabels.includes(label.name)) {
       core.notice(`Pull request has the "${label.name}" label, which allows installs during Maintenance milestones.`);
       process.exit(0);
