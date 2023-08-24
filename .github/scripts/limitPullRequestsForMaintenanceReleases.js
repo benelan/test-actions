@@ -1,5 +1,5 @@
 module.exports = async ({ github, context, core }) => {
-  const labels = github?.event?.pull_request?.labels ?? []
+  const labels = github?.event?.pull_request?.labels ?? [];
 
   const { data: milestones } = await github.rest.issues.listMilestones({
     owner: context.repo.owner,
@@ -19,7 +19,9 @@ module.exports = async ({ github, context, core }) => {
 
   labels.forEach((label) => {
     if (allowedLabels.includes(label.name)) {
-      core.notice(`Pull request has the "${label.name}" label, which allows installs during Maintenance milestones.`);
+      core.notice(
+        `Pull request has the "${label.name}" label, which allows installs during Maintenance milestones.`,
+      );
       process.exit(0);
     }
   });
@@ -30,11 +32,11 @@ module.exports = async ({ github, context, core }) => {
       continue;
     }
 
-    if (milestone[index - 1]?.title?.match("Maintenance")) {
+    if (/Maintenance/i.test(milestone[index - 1]?.title)) {
       core.setFailed(
         `Installing this pull request is blocked until the Maintenance milestone ends (${
           milestone[index - 1]?.due_on
-        }). Add one of the following labels to prevent this error: ${allowedLabels}.`
+        }). Add one of the following labels to prevent this error: ${allowedLabels}.`,
       );
     } else {
       core.notice("Current milestone is not a Maintenance release");
