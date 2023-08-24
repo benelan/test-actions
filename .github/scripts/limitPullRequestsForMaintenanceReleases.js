@@ -1,6 +1,6 @@
 module.exports = async ({ github, context, core }) => {
   const labels = github?.event?.pull_request?.labels ?? [];
-
+  console.log("Labels:", labels);
   const { data: milestones } = await github.rest.issues.listMilestones({
     owner: context.repo.owner,
     repo: context.repo.repo,
@@ -9,6 +9,8 @@ module.exports = async ({ github, context, core }) => {
     per_page: 100,
     direction: "asc",
   });
+
+  console.log("Milestones:", milestones);
 
   if (!milestones.length) {
     core.notice("There are no open milestones in this repo, ending run.");
@@ -29,6 +31,11 @@ module.exports = async ({ github, context, core }) => {
   const currentDate = new Date(Date.now());
   for (const [index, milestone] of milestones.entries()) {
     if (!milestone?.due_on || new Date(milestone?.due_on) < currentDate) {
+      core.notice(
+        "Skipping milestone",
+        milestone.title,
+        "because it is past due or doesn't have a due date",
+      );
       continue;
     }
 
