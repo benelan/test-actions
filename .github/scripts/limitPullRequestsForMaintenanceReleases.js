@@ -28,7 +28,7 @@ module.exports = async ({ github, context, core }) => {
 
   const currentDate = new Date(Date.now());
   for (const [index, milestone] of milestones.entries()) {
-    if (!milestone?.due_on || new Date(milestone?.due_on) > currentDate) {
+    if (!milestone?.due_on || new Date(milestone?.due_on) < currentDate) {
       continue;
     }
 
