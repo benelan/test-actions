@@ -1,0 +1,61 @@
+name: Release
+on:
+  push:
+    branches: [master]
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: pandoc/actions/setup
+        with:
+          version: 2.19
+      - uses: mfinelli/setup-shfmt@v3
+      - run: make man
+      - uses: DavidAnson/markdownlint-cli2-action@v14
+        with:
+          fix: true
+          config: .markdownlint.json
+          globs: "**/*.md"
+      - name: Push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: generate man page and format code"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+  release-please:
+    name: release
+    runs-on: ubuntu-latest
+    needs: docs
+    steps:
+      - uses: google-github-actions/release-please-action@v3.7.9
+        id: release
+        with:
+          release-type: simple
+          package-name: git-mux
+          token: ${{ secrets.GITHUB_TOKEN }}
+          default-branch: master
+          extra-files: bin/git-mux
+          plugins: sentence-case
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: master
+      - name: tag stable versions
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+          git tag -d stable || true
+          git push origin :stable || true
+          git tag -a stable -m "Current Stable Release"
+          git push origin stable
