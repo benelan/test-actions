@@ -20,12 +20,12 @@ jobs:
         with:
           pandoc-version: "2.17.1"
       - uses: mfinelli/setup-shfmt@v3
-      - run: make man
+      - run: make
       - uses: DavidAnson/markdownlint-cli2-action@v14
         with:
           fix: true
           config: .markdownlint.json
-          globs: "docs/.md"
+          globs: "docs/*.md"
       - name: Push changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:

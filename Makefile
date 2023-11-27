@@ -9,7 +9,7 @@ all: man format lint
 man: docs/$(PROGRAM).1.txt
 	mkdir -p bin/$(MANDIR)
 	pandoc --standalone --from markdown-smart --to man $< --output bin/$(MANDIR)/$(PROGRAM).1
-	pandoc --standalone --from markdown-smart --to gfm $< --output docs/MANUAL.md
+	pandoc --from markdown-smart --to gfm $< --output docs/MANUAL.md
 	sed -i 's%\*\$$%*\\$$%g' docs/MANUAL.md
 	sed -i 's%\*ENVIRONMENT\*%[ENVIRONMENT](#environment)%g' docs/MANUAL.md
 	sed -i 's%^#%##%g' docs/MANUAL.md
@@ -36,12 +36,9 @@ lint:
 		shellcheck bin/$(PROGRAM)
 	# https://github.com/igorshubovych/markdownlint-cli
 	command -v markdownlint >/dev/null 2>&1 && \
-		markdownlint .
+		markdownlint docs/*.md
 
 format: man
-	# https://github.com/prettier/prettier
-	command -v prettier >/dev/null 2>&1 && \
-		prettier --write .
 	# https://github.com/mvdan/sh
 	command -v shfmt >/dev/null 2>&1 && \
 		shfmt --posix --indent 4 --case-indent --write bin/$(PROGRAM)
@@ -50,7 +47,7 @@ format: man
 		shellcheck --format=diff bin/$(PROGRAM) | git apply --allow-empty
 	# fix some markdownlint issues
 	command -v markdownlint >/dev/null 2>&1 && \
-		markdownlint . --fix --dot >/dev/null 2>&1 || true
+		markdownlint docs/*.md --fix --dot >/dev/null 2>&1 || true
 
 changelog:
 	# https://github.com/conventional-changelog/conventional-changelog
