@@ -3,7 +3,7 @@ on:
   worflow_dispatch:
   # pull_request:
   #   types: [opened, reopened, synchronize, labeled, unlabeled]
-  #   branches: [master]
+  #   branches: [main]
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -18,7 +18,7 @@ jobs:
         run: |
           current_branch=$(git rev-parse --abbrev-ref HEAD)
           # package.json files changed in the branch
-          packages_changed=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/master) -- "**/package.json")
+          packages_changed=$(git diff --name-only "$current_branch" $(git merge-base "$current_branch" origin/main) -- "**/package.json")
           # metric files changed in the previous commit
           metrics_changed=$(git diff --name-only HEAD^ HEAD -- "./esm-samples/.metrics/*.csv")
           if [ -z "$packages_changed" ]; then

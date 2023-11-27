@@ -1,7 +1,7 @@
 name: Release
 on:
   push:
-    branches: [master]
+    branches: [main]
 permissions:
   contents: write
   pull-requests: write
@@ -43,13 +43,13 @@ jobs:
           release-type: simple
           package-name: git-mux
           token: ${{ secrets.GITHUB_TOKEN }}
-          default-branch: master
+          default-branch: main
           extra-files: bin/git-mux
           plugins: sentence-case
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: master
+          ref: main
       - name: tag stable versions
         if: ${{ steps.release.outputs.release_created }}
         run: |

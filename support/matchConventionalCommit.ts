@@ -9,7 +9,7 @@ const exec = pify(childProcess.exec);
 
   const currentBranch = (await exec(`git rev-parse --abbrev-ref HEAD`, { encoding: "utf-8" })).trim();
 
-  const commits = (await exec(`git log --format=%B ${currentBranch} --not master | tr '\n' ';'`, { encoding: "utf-8" }))
+  const commits = (await exec(`git log --format=%B ${currentBranch} --not main | tr '\n' ';'`, { encoding: "utf-8" }))
     .trim()
     .split(";")
     .filter((commit: string) => !!commit);
