@@ -22,7 +22,7 @@ jobs:
       - run: make man
       - uses: actionsx/prettier@v2
         with:
-          args: --fix docs/*.md
+          args: --write --parser markdown docs/MANUAL.md 
       - uses: DavidAnson/markdownlint-cli2-action@v14
         with:
           fix: true
