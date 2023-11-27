@@ -39,6 +39,9 @@ lint:
 		markdownlint docs/*.md
 
 format: man
+	# https://github.com/prettier/prettier
+	command -v prettier >/dev/null 2>&1 && \
+		prettier --write docs/*.md
 	# https://github.com/mvdan/sh
 	command -v shfmt >/dev/null 2>&1 && \
 		shfmt --posix --indent 4 --case-indent --write bin/$(PROGRAM)
@@ -46,8 +49,8 @@ format: man
 	 command -v shellcheck >/dev/null 2>&1 && \
 		shellcheck --format=diff bin/$(PROGRAM) | git apply --allow-empty
 	# fix some markdownlint issues
-	command -v markdownlint >/dev/null 2>&1 && \
-		markdownlint docs/*.md --fix --dot >/dev/null 2>&1 || true
+	# command -v markdownlint >/dev/null 2>&1 && \
+	# 	markdownlint docs/*.md --fix >/dev/null 2>&1 || true
 
 changelog:
 	# https://github.com/conventional-changelog/conventional-changelog
