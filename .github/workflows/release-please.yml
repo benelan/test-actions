@@ -14,9 +14,9 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
-      - uses: pandoc/actions/setup
+      - uses: r-lib/actions/setup-pandoc@v1
         with:
-          version: 2.19
+          pandoc-version: "2.7.3"
       - uses: mfinelli/setup-shfmt@v3
       - run: make man
       - uses: DavidAnson/markdownlint-cli2-action@v14
