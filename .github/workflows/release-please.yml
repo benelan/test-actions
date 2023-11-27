@@ -14,16 +14,18 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
-      - uses: r-lib/actions/setup-pandoc@v1
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+      - uses: r-lib/actions/setup-pandoc@v2
         with:
-          pandoc-version: "2.7.3"
+          pandoc-version: "2.17.1"
       - uses: mfinelli/setup-shfmt@v3
       - run: make man
       - uses: DavidAnson/markdownlint-cli2-action@v14
         with:
           fix: true
           config: .markdownlint.json
-          globs: "**/*.md"
+          globs: "docs/.md"
       - name: Push changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
@@ -46,8 +48,11 @@ jobs:
           default-branch: main
           extra-files: bin/git-mux
           plugins: sentence-case
-      - uses: actions/checkout@v3
+          prerelease: true
+      - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
+          fetch-tags: true
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: main
       - name: tag stable versions
