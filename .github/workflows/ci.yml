@@ -6,6 +6,10 @@ on:
     branches: [main, master]
   pull_request:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   ci:
     uses: benelan/github/.github/workflows/ci.yml@main
