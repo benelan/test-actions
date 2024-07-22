@@ -14,7 +14,7 @@ permissions: {}
 
 jobs:
   checks:
-    if: github.repository_owner == 'benelan'
+    if: contains(fromJSON('["benelan", "Esri", "ArcGIS"]'), github.repository_owner)
     permissions:
       statuses: write
       contents: read
