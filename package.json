@@ -1,3 +1,7 @@
 {
-  "name": "test"
+  "name": "test",
+  "devDependencies": {
+    "@octokit/webhooks-types": "^7.5.1",
+    "github-script": "github:actions/github-script"
+  }
 }
