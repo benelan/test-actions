@@ -1,5 +1,4 @@
 // @ts-check
-const { resolve } = require("path");
 const { writeFile } = require("fs/promises");
 
 /** @param {import('github-script').AsyncFunctionArguments} AsyncFunctionArguments */
@@ -9,11 +8,6 @@ module.exports = async ({ github, context, core }) => {
   const outputJson = {};
   let outputCsv =
     "id,title,due_on,open_issues,closed_issues,remaining_estimate,completed_estimate";
-
-  const outputCsvPath = resolve(__dirname, "..", "milestone-estimates.csv");
-  const outputJsonPath = resolve(__dirname, "..", "milestone-estimates.json");
-
-  core.debug(outputJsonPath)
 
   try {
     const milestones = await github.rest.issues.listMilestones({
@@ -77,11 +71,12 @@ module.exports = async ({ github, context, core }) => {
     }
 
     const stringifiedOutputJson = JSON.stringify(outputJson, null, 2);
-    core.debug(stringifiedOutputJson);
-    core.debug(outputCsv);
 
-    await writeFile(outputCsvPath, outputCsv);
-    await writeFile(outputJsonPath, stringifiedOutputJson);
+    core.debug(`JSON Output:\n${stringifiedOutputJson}`);
+    core.debug(`\nCSV Output:\n${outputCsv}`);
+
+    await writeFile("./milestone-estimates.csv", outputCsv);
+    await writeFile("./milestone-estimates.json", stringifiedOutputJson);
 
     process.exit(0);
   } catch (error) {

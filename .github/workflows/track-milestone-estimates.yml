@@ -18,5 +18,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: milestone-estimates
-          path: ${{ github.workspace }}/.github/milestone-estimates.*
+          path: milestone-estimates.*
           if-no-files-found: error
